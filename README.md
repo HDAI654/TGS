@@ -22,6 +22,7 @@ TGS Scraper is a Python script that scrapes data from the [TV Garden](https://tv
 1. **Clone the repository**
 ```bash
 git clone https://github.com/HDAI654/TGS.git
+cd TGS
 ```
 2. **Install dependencies**
 ```bash
@@ -147,6 +148,7 @@ Change update interval in minutes for a job.
 1. **Clone the repository**
 ```bash
 git clone https://github.com/HDAI654/TGS.git
+cd TGS
 ```
 2. **Install dependencies**
 ```bash
@@ -185,6 +187,9 @@ http://localhost:3000
 
 # 📝 Contributing
 Contributions are welcome and encouraged! If you find a bug or have a suggestion for improvement, please open an issue or submit a pull request.
+
+# Important Note
+To Use this project you must run the Back-End and Front-End together.
 
 # LICENSE
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
