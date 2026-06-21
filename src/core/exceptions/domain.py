@@ -16,3 +16,6 @@ class InvalidNameError(DomainError):
 
 class InvalidURLError(DomainError):
     pass
+
+class InvalidLanguageError(DomainError):
+    pass
