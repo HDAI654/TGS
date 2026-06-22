@@ -5,11 +5,13 @@ from src.channel_app.domain.value_objects.url import URL
 from src.channel_app.domain.value_objects.language import Language
 from src.channel_app.domain.value_objects.is_geo_blocked import IsGeoBlocked
 
+
 class ChannelEntity(Entity):
     def __init__(
         self,
         id: ID,
         name: Name,
+        category: Name,
         stream_urls: list[URL],
         youtube_urls: list[URL],
         languages: list[Language],

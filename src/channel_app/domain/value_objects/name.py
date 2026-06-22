@@ -11,5 +11,5 @@ class Name(BaseVO[str]):
             raise InvalidNameError(f"Name must be a non-empty string")
         if len(value) > 100:
             raise InvalidNameError(f"Name is so long !")
-        
+
         super().__init__(value)

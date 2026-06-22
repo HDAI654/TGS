@@ -1,14 +1,10 @@
-from src.core.base_vo import BaseVO
 from src.core.exceptions import InvalidIsGeoBlockedError
+from src.channel_app.domain.value_objects.base_bool_vo import BaseBoolVO
 
 
-class IsGeoBlocked(BaseVO[bool]):
+class IsGeoBlocked(BaseBoolVO):
     def __init__(self, value: bool | None = False):
         if value is None:
             value = False
-        if not isinstance(value, bool):
-            raise InvalidIsGeoBlockedError(
-                f"IsGeoBlocked must be boolean, got {type(value).__name__}"
-            )
 
-        super().__init__(value)
+        super().__init__(InvalidIsGeoBlockedError, value)

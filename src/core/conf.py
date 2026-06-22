@@ -1,8 +1,9 @@
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+import json
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env_file = BASE_DIR / ".env"
 load_dotenv(env_file)
@@ -12,3 +13,6 @@ class Config:
     # App
     APP_NAME = os.getenv("APP_NAME", "MyApp")
     APP_ENV: str = os.getenv("APP_ENV", "development")
+
+    with open(BASE_DIR / "timezones.json", "r", encoding="utf-8") as f:
+        ALLOWED_TIMEZONE = set(json.load(f)["timezones"])

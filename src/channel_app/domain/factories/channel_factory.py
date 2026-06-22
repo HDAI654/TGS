@@ -12,6 +12,7 @@ class ChannelFactory:
     def create(
         *,
         name: str,
+        category: str,
         stream_urls: list[str],
         youtube_urls: list[str],
         languages: list[str],
@@ -22,15 +23,16 @@ class ChannelFactory:
         """
         Create a new ChannelEntity.
         """
-        if len(stream_urls)+len(youtube_urls) == 0:
-            raise ValueError("channel must have at least one stream/youtube url")
-        
+        if len(stream_urls) + len(youtube_urls) == 0:
+            raise ValueError("Channel must have at least one stream/youtube url")
+
         if len(languages) == 0:
-            raise ValueError("languages can't be empty")
+            raise ValueError("Languages can't be empty")
 
         return ChannelEntity(
             id=ID(IDGenerator.generate()) if id is None else ID(id),
             name=Name(name),
+            category=Name(category),
             stream_urls=[URL(u) for u in stream_urls],
             youtube_urls=[URL(u) for u in youtube_urls],
             languages=[Language(l) for l in languages],

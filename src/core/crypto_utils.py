@@ -8,7 +8,7 @@ class IDGenerationError(Exception):
 
 
 class IDGenerator:
-    ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     LENGTH = 14
 
     @staticmethod

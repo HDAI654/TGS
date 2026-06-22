@@ -24,15 +24,15 @@ class TestURL:
     def test_long_URL(self):
         with pytest.raises(InvalidURLError):
             URL("MyURL" + "ABC" * 2050)
-    
+
     def test_URL_with_not_allowed_scheme(self):
         with pytest.raises(InvalidURLError):
             URL("hjej://ejcnec.edji")
-    
+
     def test_URL_without_hostname(self):
         with pytest.raises(InvalidURLError):
             URL("http://")
-    
+
     def test_with_invalid_format(self):
         with pytest.raises(InvalidURLError):
             URL("hello:)")

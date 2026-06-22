@@ -1,6 +1,7 @@
 from src.core.base_vo import BaseVO
 from src.core.exceptions import InvalidIDError
 
+
 class ID(BaseVO[str]):
     def __init__(self, value: str):
         if not isinstance(value, str):
