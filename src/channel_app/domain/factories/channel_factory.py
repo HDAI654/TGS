@@ -4,6 +4,7 @@ from src.core.id_vo import ID
 from src.channel_app.domain.value_objects.name import Name
 from src.channel_app.domain.value_objects.url import URL
 from src.channel_app.domain.value_objects.language import Language
+from src.channel_app.domain.value_objects.country_code import CountryCode
 from src.channel_app.domain.value_objects.is_geo_blocked import IsGeoBlocked
 
 
@@ -16,7 +17,7 @@ class ChannelFactory:
         stream_urls: list[str],
         youtube_urls: list[str],
         languages: list[str],
-        country_id: str,
+        country_code: str,
         is_geo_blocked: bool,
         id: str | None = None,
     ) -> ChannelEntity:
@@ -36,6 +37,6 @@ class ChannelFactory:
             stream_urls=[URL(u) for u in stream_urls],
             youtube_urls=[URL(u) for u in youtube_urls],
             languages=[Language(l) for l in languages],
-            country_id=ID(country_id),
+            country_code=CountryCode(country_code),
             is_geo_blocked=IsGeoBlocked(is_geo_blocked),
         )

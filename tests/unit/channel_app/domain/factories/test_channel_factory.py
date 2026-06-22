@@ -11,12 +11,13 @@ class TestChannelFactory:
             stream_urls=["https://example.com"],
             youtube_urls=["https://example.com"],
             languages=["eng"],
-            country_id="MyIDDDDDDDDDDD",
+            country_code="US",
             is_geo_blocked=True,
         )
 
         assert channel.id.value == "MyIDDDDDDDDDDD"
         assert channel.name.value == "Channel1"
+        assert channel.category.value == "Sports"
         assert channel.stream_urls[0].value == "https://example.com"
         assert channel.youtube_urls[0].value == "https://example.com"
         assert channel.languages[0].value == "eng"
@@ -30,7 +31,7 @@ class TestChannelFactory:
             stream_urls=["https://example.com"],
             youtube_urls=["https://example.com"],
             languages=["eng"],
-            country_id="MyIDDDDDDDDDDD",
+            country_code="US",
             is_geo_blocked=True,
         )
 
@@ -45,7 +46,7 @@ class TestChannelFactory:
                 stream_urls=["https://example.com"],
                 youtube_urls=["https://example.com"],
                 languages=[],
-                country_id="MyIDDDDDDDDDDD",
+                country_code="US",
                 is_geo_blocked=True,
             )
 
@@ -58,6 +59,6 @@ class TestChannelFactory:
                 stream_urls=[],
                 youtube_urls=[],
                 languages=[],
-                country_id="MyIDDDDDDDDDDD",
+                country_code="US",
                 is_geo_blocked=True,
             )

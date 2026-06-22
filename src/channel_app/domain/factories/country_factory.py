@@ -17,13 +17,11 @@ class CountryFactory:
         capital: str,
         timezone: str,
         channel_count: int | float,
-        id: str | None = None,
     ) -> CountryEntity:
         """
         Create a new CountryEntity.
         """
         return CountryEntity(
-            id=ID(IDGenerator.generate()) if id is None else ID(id),
             country_code=CountryCode(country_code),
             country_name=Name(country_name),
             capital=Name(capital),
