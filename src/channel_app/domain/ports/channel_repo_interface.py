@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from src.channel_app.domain.entities.channel import ChannelEntity
 from src.core.id_vo import ID
+from src.channel_app.domain.value_objects.country_code import CountryCode
 from src.channel_app.domain.value_objects.name import Name
 from src.channel_app.domain.value_objects.url import URL
 from src.channel_app.domain.value_objects.language import Language
@@ -21,9 +22,6 @@ class IChannelRepository(ABC):
         channel_id: ID,
         name: Name = None,
         category: Name = None,
-        stream_urls: list[URL] = None,
-        youtube_urls: list[URL] = None,
-        languages: list[Language] = None,
         country_id: ID = None,
         is_geo_blocked: IsGeoBlocked = None,
     ) -> None:
@@ -33,6 +31,11 @@ class IChannelRepository(ABC):
     @abstractmethod
     async def add_new_url(self, channel_id: ID, url: URL, mode: str):
         """Add new url to a channel."""
+        pass
+
+    @abstractmethod
+    async def add_new_language(self, channel_id: ID, language: Language):
+        """Add new language to a channel."""
         pass
 
     @abstractmethod
@@ -46,11 +49,18 @@ class IChannelRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_channel_ids(self) -> list[ID]:
-        """Get all IDs of channels"""
+    async def get_by_country_code(
+        self, country_code: CountryCode
+    ) -> list[ChannelEntity]:
+        """Get all channels of a country"""
         pass
 
     @abstractmethod
     async def exists_by_id(self, channel_id: ID) -> bool:
         """Check if a channel exists by ID."""
+        pass
+
+    @abstractmethod
+    async def upsert_batch(self, channels: list[ChannelEntity]) -> None:
+        """Add new channels and update changed channels"""
         pass

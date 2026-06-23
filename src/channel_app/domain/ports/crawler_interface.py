@@ -8,11 +8,11 @@ class ICrawler(ABC):
     """Interface for Crawler."""
 
     @abstractmethod
-    async def extract_countries(self) -> dict[str, CountryEntity]:
+    async def extract_all_countries(self) -> list[CountryEntity]:
         """Extract all countries."""
         pass
 
     @abstractmethod
-    async def extract_channels(self, country_code: CountryCode) -> list[ChannelEntity]:
-        """Extract all channels of a country."""
+    async def extract_all_channels(self) -> list[ChannelEntity]:
+        """Extract all channels of all countries."""
         pass

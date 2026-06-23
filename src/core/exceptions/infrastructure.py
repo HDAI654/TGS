@@ -79,13 +79,13 @@ class CrawlerException(InfrastructureError):
     pass
 
 
-class ExtractTimeOut(CrawlerException):
+class ExtractTimeOutError(CrawlerException):
     """Extract operation time out"""
 
     pass
 
 
-class CountryChannelsExtractFaild(CrawlerException):
-    """Country not found in extractable data or it has no channel anymore"""
+class CountryChannelsNotFoundError(CrawlerException):
+    """Crawler couldn't find the country to get its channels"""
 
     pass

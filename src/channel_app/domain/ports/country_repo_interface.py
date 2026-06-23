@@ -47,3 +47,8 @@ class ICountryRepository(ABC):
     async def exists_by_id(self, country_code: CountryCode) -> bool:
         """Check if a country exists by CountryCode."""
         pass
+
+    @abstractmethod
+    async def upsert_batch(self, countries: list[CountryEntity]) -> None:
+        """Add new countries and update changed countries"""
+        pass
