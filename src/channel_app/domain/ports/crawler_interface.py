@@ -8,7 +8,7 @@ class ICrawler(ABC):
     """Interface for Crawler."""
 
     @abstractmethod
-    async def extract_countries(self) -> list[CountryEntity]:
+    async def extract_countries(self) -> dict[str, CountryEntity]:
         """Extract all countries."""
         pass
 

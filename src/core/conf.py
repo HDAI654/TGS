@@ -16,3 +16,6 @@ class Config:
 
     with open(BASE_DIR / "timezones.json", "r", encoding="utf-8") as f:
         ALLOWED_TIMEZONE = set(json.load(f)["timezones"])
+
+    with open(BASE_DIR / "languages.json", "r", encoding="utf-8") as f:
+        ALLOWED_LANGUAGES = set(json.load(f)["languages"])

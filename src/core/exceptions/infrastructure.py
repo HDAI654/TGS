@@ -85,7 +85,7 @@ class ExtractTimeOut(CrawlerException):
     pass
 
 
-class CountryExtractFaild(CrawlerException):
-    """Country not found in extractable data"""
+class CountryChannelsExtractFaild(CrawlerException):
+    """Country not found in extractable data or it has no channel anymore"""
 
     pass
