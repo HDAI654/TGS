@@ -39,3 +39,7 @@ class InvalidCountError(DomainError):
 
 class InvalidHasChannelsError(DomainError):
     pass
+
+
+class InvalidCategoryError(DomainError):
+    pass

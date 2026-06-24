@@ -13,6 +13,8 @@ class ICrawler(ABC):
         pass
 
     @abstractmethod
-    async def extract_all_channels(self) -> list[ChannelEntity]:
+    async def extract_all_channels(
+        self, country_codes: list[CountryCode]
+    ) -> list[ChannelEntity]:
         """Extract all channels of all countries."""
         pass

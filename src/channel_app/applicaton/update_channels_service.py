@@ -17,13 +17,16 @@ class UpdateChannelsService:
     async def execute(self):
         logger.info("Updating channels")
 
+        # Get all country codes
+        country_codes = await self.uow.countries.get_country_codes()
+
         # Extract all channels with crawler
-        extracted_channels = await self.crawler.extract_all_channels()
+        extracted_channels = await self.crawler.extract_all_channels(country_codes)
 
         logger.info("Extracted %s channels from crawler", len(extracted_channels))
 
         # Adds new channels & Updates changed channels
-        await self.uow.channel.upsert_batch(extracted_channels)
+        await self.uow.channels.upsert_batch(extracted_channels)
 
         await self.uow.commit()
 

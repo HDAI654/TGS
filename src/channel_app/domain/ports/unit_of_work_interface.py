@@ -4,8 +4,8 @@ from src.channel_app.domain.ports.channel_repo_interface import IChannelReposito
 
 
 class IUnitOfWork(ABC):
-    country: ICountryRepository
-    channel: IChannelRepository
+    countries: ICountryRepository
+    channels: IChannelRepository
 
     @abstractmethod
     async def commit(self) -> None:

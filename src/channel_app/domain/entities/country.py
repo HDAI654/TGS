@@ -7,6 +7,15 @@ from src.channel_app.domain.value_objects.count import Count
 
 
 class CountryEntity(Entity):
+    FIELD_TYPE_MAP = {
+        "country_code": CountryCode,
+        "country_name": Name,
+        "capital": Name,
+        "timezone": Timezone,
+        "has_channels": HasChannels,
+        "channel_count": Count,
+    }
+
     def __init__(
         self,
         country_code: CountryCode,

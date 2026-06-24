@@ -23,7 +23,7 @@ class UpdateCountriesService:
         logger.info("Extracted %s countries from crawler", len(extracted_countries))
 
         # Adds new countries & Updates changed countries
-        await self.uow.country.upsert_batch(extracted_countries)
+        await self.uow.countries.upsert_batch(extracted_countries)
 
         await self.uow.commit()
 

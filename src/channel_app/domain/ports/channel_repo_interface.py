@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
+from typing import Any
 from src.channel_app.domain.entities.channel import ChannelEntity
 from src.core.id_vo import ID
 from src.channel_app.domain.value_objects.country_code import CountryCode
 from src.channel_app.domain.value_objects.name import Name
+from src.channel_app.domain.value_objects.category import Category
 from src.channel_app.domain.value_objects.url import URL
 from src.channel_app.domain.value_objects.language import Language
 from src.channel_app.domain.value_objects.is_geo_blocked import IsGeoBlocked
@@ -20,10 +22,10 @@ class IChannelRepository(ABC):
     async def update(
         self,
         channel_id: ID,
-        name: Name = None,
-        category: Name = None,
-        country_id: ID = None,
-        is_geo_blocked: IsGeoBlocked = None,
+        new_name: Name | None = None,
+        new_category: Category | None = None,
+        new_country_code: CountryCode | None = None,
+        new_is_geo_blocked: IsGeoBlocked | None = None,
     ) -> None:
         """Update an existing channel in the database."""
         pass
@@ -44,10 +46,10 @@ class IChannelRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_by_country_code(
-        self, country_code: CountryCode
+    async def search(
+        self, fields: list[str], filters: dict[str, Any]
     ) -> list[ChannelEntity]:
-        """Get all channels of a country"""
+        """Search channels by filters and return specified fields."""
         pass
 
     @abstractmethod

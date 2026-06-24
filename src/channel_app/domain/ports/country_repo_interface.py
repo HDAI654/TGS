@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Any
 from src.channel_app.domain.entities.country import CountryEntity
 from src.core.id_vo import ID
 from src.channel_app.domain.value_objects.country_code import CountryCode
@@ -20,10 +21,10 @@ class ICountryRepository(ABC):
     async def update(
         self,
         country_code: CountryCode,
-        country_name: Name = None,
-        capital: Name = None,
-        timezone: Timezone = None,
-        channel_count: Count = None,
+        new_country_name: Name | None = None,
+        new_capital: Name | None = None,
+        new_timezone: Timezone | None = None,
+        new_channel_count: Count | None = None,
     ) -> None:
         """Update an existing country in the database."""
         pass
@@ -41,6 +42,13 @@ class ICountryRepository(ABC):
     @abstractmethod
     async def get_country_codes(self) -> list[CountryCode]:
         """Get all CountryCodes of countries"""
+        pass
+
+    @abstractmethod
+    async def search(
+        self, fields: list[str], filters: dict[str, Any]
+    ) -> list[CountryEntity]:
+        """Search countries by filters and return specified fields."""
         pass
 
     @abstractmethod
