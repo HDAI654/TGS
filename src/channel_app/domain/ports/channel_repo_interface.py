@@ -29,16 +29,6 @@ class IChannelRepository(ABC):
         pass
 
     @abstractmethod
-    async def add_new_url(self, channel_id: ID, url: URL, mode: str):
-        """Add new url to a channel."""
-        pass
-
-    @abstractmethod
-    async def add_new_language(self, channel_id: ID, language: Language):
-        """Add new language to a channel."""
-        pass
-
-    @abstractmethod
     async def delete(self, channel_id: ID) -> None:
         """Delete a channel by ID."""
         pass
@@ -46,6 +36,11 @@ class IChannelRepository(ABC):
     @abstractmethod
     async def get_by_id(self, channel_id: ID) -> ChannelEntity:
         """Get a channel by ID."""
+        pass
+
+    @abstractmethod
+    async def get_full_by_id(self, channel_id: ID) -> ChannelEntity:
+        """Get a full data of a channel (its data + urls + languages) by ID."""
         pass
 
     @abstractmethod
@@ -63,4 +58,24 @@ class IChannelRepository(ABC):
     @abstractmethod
     async def upsert_batch(self, channels: list[ChannelEntity]) -> None:
         """Add new channels and update changed channels"""
+        pass
+
+    @abstractmethod
+    async def add_new_url(self, channel_id: ID, url: URL, mode: str):
+        """Add new url to a channel."""
+        pass
+
+    @abstractmethod
+    async def remove_url(self, channel_id: ID, url: URL):
+        """Remove a url from a channel."""
+        pass
+
+    @abstractmethod
+    async def add_new_language(self, channel_id: ID, language: Language):
+        """Add new language to a channel."""
+        pass
+
+    @abstractmethod
+    async def remove_language(self, channel_id: ID, language: Language):
+        """Remove a language from a channel."""
         pass

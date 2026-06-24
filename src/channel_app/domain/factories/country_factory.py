@@ -1,6 +1,4 @@
 from src.channel_app.domain.entities.country import CountryEntity
-from src.core.crypto_utils import IDGenerator
-from src.core.id_vo import ID
 from src.channel_app.domain.value_objects.country_code import CountryCode
 from src.channel_app.domain.value_objects.name import Name
 from src.channel_app.domain.value_objects.timezone import Timezone
