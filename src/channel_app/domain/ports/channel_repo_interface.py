@@ -1,12 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import Any
 from src.channel_app.domain.entities.channel import ChannelEntity
+from src.channel_app.domain.entities.url_entity import URLEntity
 from src.core.id_vo import ID
 from src.channel_app.domain.value_objects.country_code import CountryCode
 from src.channel_app.domain.value_objects.name import Name
 from src.channel_app.domain.value_objects.category import Category
-from src.channel_app.domain.value_objects.url import URL
-from src.channel_app.domain.value_objects.language import Language
 from src.channel_app.domain.value_objects.is_geo_blocked import IsGeoBlocked
 
 
@@ -41,11 +40,6 @@ class IChannelRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_full_by_id(self, channel_id: ID) -> ChannelEntity:
-        """Get a full data of a channel (its data + urls + languages) by ID."""
-        pass
-
-    @abstractmethod
     async def search(
         self, fields: list[str], filters: dict[str, Any]
     ) -> list[ChannelEntity]:
@@ -63,21 +57,16 @@ class IChannelRepository(ABC):
         pass
 
     @abstractmethod
-    async def add_new_url(self, channel_id: ID, url: URL, mode: str):
+    async def add_new_url(self, channel_id: ID, url: URLEntity) -> None:
         """Add new url to a channel."""
         pass
 
     @abstractmethod
-    async def remove_url(self, channel_id: ID, url: URL):
+    async def remove_url(self, channel_id: ID, url_id: ID) -> None:
         """Remove a url from a channel."""
         pass
 
     @abstractmethod
-    async def add_new_language(self, channel_id: ID, language: Language):
-        """Add new language to a channel."""
-        pass
-
-    @abstractmethod
-    async def remove_language(self, channel_id: ID, language: Language):
-        """Remove a language from a channel."""
+    async def get_urls(self, channel_id: ID) -> list[URLEntity]:
+        """Remove a url from a channel."""
         pass

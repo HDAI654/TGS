@@ -8,12 +8,14 @@ class TestChannelFactory:
             id="MyIDDDDDDDDDDD",
             name="Channel1",
             category="Sports",
+            language="eng",
             country_code="US",
             is_geo_blocked=True,
         )
 
         assert channel.id.value == "MyIDDDDDDDDDDD"
         assert channel.name.value == "Channel1"
+        assert channel.language.value == "eng"
         assert channel.category.value == "Sports"
         assert channel.is_geo_blocked.value == True
 
@@ -21,6 +23,7 @@ class TestChannelFactory:
         channel = ChannelFactory.create(
             name="Channel1",
             category="Sports",
+            language="eng",
             country_code="US",
             is_geo_blocked=True,
         )
