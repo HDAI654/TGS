@@ -34,6 +34,12 @@ class NoChangesError(InfrastructureError):
     pass
 
 
+class InvalidFieldError(InfrastructureError):
+    """Invalid field provided for update"""
+
+    pass
+
+
 # ===== ChannelRepo Exceptions =====
 class ChannelException(InfrastructureError):
     """Base Channel error"""

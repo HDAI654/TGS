@@ -1,11 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import Any
 from src.channel_app.domain.entities.country import CountryEntity
-from src.core.id_vo import ID
 from src.channel_app.domain.value_objects.country_code import CountryCode
 from src.channel_app.domain.value_objects.name import Name
 from src.channel_app.domain.value_objects.timezone import Timezone
-from src.channel_app.domain.value_objects.has_channels import HasChannels
 from src.channel_app.domain.value_objects.count import Count
 
 
@@ -47,12 +45,12 @@ class ICountryRepository(ABC):
     @abstractmethod
     async def search(
         self, fields: list[str], filters: dict[str, Any]
-    ) -> list[CountryEntity]:
+    ) -> list[dict[str, Any]]:
         """Search countries by filters and return specified fields."""
         pass
 
     @abstractmethod
-    async def exists_by_id(self, country_code: CountryCode) -> bool:
+    async def exists_by_code(self, country_code: CountryCode) -> bool:
         """Check if a country exists by CountryCode."""
         pass
 
