@@ -35,7 +35,7 @@ class ICountryRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_by_id(self, country_code: CountryCode) -> CountryEntity:
+    async def get_by_code(self, country_code: CountryCode) -> CountryEntity:
         """Get a country by CountryCode."""
         pass
 

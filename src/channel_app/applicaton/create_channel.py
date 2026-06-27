@@ -6,7 +6,7 @@ from src.channel_app.domain.factories.channel_factory import ChannelFactory
 logger = logging.getLogger(__name__)
 
 
-class CreateCardService:
+class CreateChannelService:
     def __init__(
         self,
         uow: IUnitOfWork,

@@ -62,7 +62,7 @@ class IChannelRepository(ABC):
         pass
 
     @abstractmethod
-    async def remove_url(self, channel_id: ID, url_id: ID) -> None:
+    async def remove_url(self, url_id: ID) -> None:
         """Remove a url from a channel."""
         pass
 

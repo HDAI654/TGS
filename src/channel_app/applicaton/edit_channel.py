@@ -10,7 +10,7 @@ from src.core.exceptions import InvalidIDError, ChannelNotFoundError
 logger = logging.getLogger(__name__)
 
 
-class EditCardService:
+class EditChannelService:
     def __init__(
         self,
         uow: IUnitOfWork,
@@ -32,7 +32,6 @@ class EditCardService:
             channel_id_vo = ID(channel_id)
         except InvalidIDError:
             raise ChannelNotFoundError(f"Channel not found: channel_id={channel_id}")
-        channel = await self.uow.channels.get_by_id(channel_id_vo)
 
         # Convert optional parameters to value objects
         new_name_vo = Name(new_name) if new_name is not None else None
@@ -45,7 +44,7 @@ class EditCardService:
         )
 
         await self.uow.channels.update(
-            channel_id=channel.id,
+            channel_id=channel_id_vo,
             new_name=new_name_vo,
             new_category=new_category_vo,
             new_country_code=new_country_code_vo,
@@ -53,4 +52,4 @@ class EditCardService:
         )
         await self.uow.commit()
 
-        logger.info("Card updated successfully: channel_id=%s", channel_id)
+        logger.info("Channel updated successfully: channel_id=%s", channel_id)

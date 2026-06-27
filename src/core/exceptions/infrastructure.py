@@ -72,6 +72,25 @@ class CountryDuplicateError(CountryException):
     pass
 
 
+# ===== ChannelRepo Exceptions =====
+class URLException(InfrastructureError):
+    """Base URL error"""
+
+    pass
+
+
+class URLNotFoundError(URLException):
+    """URL not found in database"""
+
+    pass
+
+
+class URLDuplicateError(URLException):
+    """URL with same unique field exists"""
+
+    pass
+
+
 # ===== Crawler Exceptions =====
 class CrawlerException(InfrastructureError):
     """Base Crawler error"""

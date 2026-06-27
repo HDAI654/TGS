@@ -22,7 +22,7 @@ class GetChannelService:
             channel_id_vo = ID(channel_id)
         except InvalidIDError:
             raise ChannelNotFoundError(f"Channel not found: channel_id={channel_id}")
-        channel = await self.uow.channels.get_full_by_id(channel_id_vo)
+        channel = await self.uow.channels.get_by_id(channel_id_vo)
 
         logger.info("Channel found successfully: channel_id=%s", channel_id)
 
