@@ -182,105 +182,76 @@ class SQLAL_CountryRepository:
                 f"Invalid filter keys: {set(filters.keys()) - valid_fields}"
             )
 
+        # Map field names to model columns
+        field_to_column = {
+            "country_code": CountryModel.country_code,
+            "country_name": CountryModel.country_name,
+            "capital": CountryModel.capital,
+            "timezone": CountryModel.timezone,
+            "has_channels": CountryModel.has_channels,
+            "channel_count": CountryModel.channel_count,
+        }
+
         # Build query
-        query = select(CountryModel)
+        if fields:
+            # Select only requested columns
+            columns_to_select = [
+                field_to_column[f] for f in fields if f in field_to_column
+            ]
+            # Always include country_code if not already included (needed for reference)
+            if "country_code" not in fields:
+                columns_to_select.append(CountryModel.country_code)
+            query = select(*columns_to_select)
+        else:
+            # Select all
+            query = select(CountryModel)
 
         # ========== APPLY FILTERS ==========
-        if filters:
-            conditions = []
+        conditions = []
+        for key, value in filters.items():
+            if key not in field_to_column:
+                continue
+            column = field_to_column[key]
 
-            # Map field names to model columns
-            field_to_column = {
-                "country_code": CountryModel.country_code,
-                "country_name": CountryModel.country_name,
-                "capital": CountryModel.capital,
-                "timezone": CountryModel.timezone,
-                "has_channels": CountryModel.has_channels,
-                "channel_count": CountryModel.channel_count,
-            }
-
-            for key, value in filters.items():
-                if key not in field_to_column:
-                    continue
-
-                column = field_to_column[key]
-
-                # Handle different filter types
-                if key == "country_code":
-                    # Exact match for code
+            if key == "country_code":
+                conditions.append(column == value)
+            elif key in ["country_name", "capital", "timezone"]:
+                conditions.append(column.contains(value))
+            elif key == "has_channels":
+                conditions.append(column == value)
+            elif key == "channel_count":
+                if isinstance(value, dict):
+                    if "min" in value:
+                        conditions.append(column >= value["min"])
+                    if "max" in value:
+                        conditions.append(column <= value["max"])
+                else:
                     conditions.append(column == value)
 
-                elif key in ["country_name", "capital", "timezone"]:
-                    # Partial match (contains) for text fields
-                    conditions.append(column.contains(value))
-
-                elif key == "has_channels":
-                    # Boolean exact match
-                    conditions.append(column == value)
-
-                elif key == "channel_count":
-                    # Support range or exact match
-                    if isinstance(value, dict):
-                        if "min" in value:
-                            conditions.append(column >= value["min"])
-                        if "max" in value:
-                            conditions.append(column <= value["max"])
-                    else:
-                        conditions.append(column == value)
-
-            # Apply all conditions
-            if conditions:
-                query = query.where(and_(*conditions))
-
-        # ========== APPLY PROJECTION ==========
-        if fields:
-            # Map field names to model columns
-            field_to_column = {
-                "country_code": CountryModel.country_code,
-                "country_name": CountryModel.country_name,
-                "capital": CountryModel.capital,
-                "timezone": CountryModel.timezone,
-                "has_channels": CountryModel.has_channels,
-                "channel_count": CountryModel.channel_count,
-            }
-
-            # Get columns to select
-            columns_to_select = []
-            for field in fields:
-                if field in field_to_column:
-                    columns_to_select.append(field_to_column[field])
-
-            # If we have valid columns, select only those
-            if columns_to_select:
-                # Add id if not present (needed for entity construction)
-                if "id" not in fields:
-                    columns_to_select.append(CountryModel.id)
-
-                query = query.with_only_columns(*columns_to_select)
+        if conditions:
+            query = query.where(and_(*conditions))
 
         # Execute query
         result = await self._execute_db_operation(
             "search_country", self._session.execute, query
         )
-        models = result.scalars().all()
 
-        # Convert to entities
         countries = []
-        for model in models:
-            if fields:
-                # Only include requested fields
-                country_dict = {}
-                for field in fields:
-                    if hasattr(model, field):
-                        value = getattr(model, field)
-                        # Convert value objects to primitive types
-                        if hasattr(value, "value"):
-                            country_dict[field] = value.value
-                        else:
-                            country_dict[field] = value
+        if fields:
+            rows = result.all()
+
+            # Determine field order in the result
+            selected_fields = [f for f in fields if f in field_to_column]
+            if "country_code" not in fields:
+                selected_fields.append("country_code")
+
+            # Convert each row tuple to dict
+            for row in rows:
+                country_dict = dict(zip(selected_fields, row))
                 countries.append(country_dict)
-            else:
-                # Include all fields
+        else:
+            models = result.scalars().all()
+            for model in models:
                 country_dict = {
                     "id": model.id,
                     "country_code": model.country_code,

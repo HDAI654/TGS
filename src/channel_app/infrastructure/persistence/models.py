@@ -1,8 +1,6 @@
 from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
-from sqlalchemy.orm import declarative_base
-
-Base = declarative_base()
+from src.core.database import Base
 
 
 class CountryModel(Base):
@@ -11,7 +9,7 @@ class CountryModel(Base):
     id = Column(Integer, primary_key=True, index=True)
     country_code = Column(String(2), unique=True, nullable=False, index=True)
     country_name = Column(String(100), nullable=False, index=True)
-    capital = category = Column(String(100), nullable=False, index=True)
+    capital = Column(String(100), nullable=False, index=True)
     timezone = Column(String(100), nullable=False, index=True)
     has_channels = Column(Boolean, nullable=False, index=True)
     channel_count = Column(Integer, nullable=False, index=True)
@@ -53,6 +51,8 @@ class ChannelModel(Base):
 
 class URLModel(Base):
     __tablename__ = "urls"
+
+    id = Column(Integer, primary_key=True, index=True)
     nano_id = Column(String(14), unique=True, nullable=False, index=True)
     channel_id = Column(
         ForeignKey("channels.nano_id", ondelete="CASCADE"), nullable=False, index=True

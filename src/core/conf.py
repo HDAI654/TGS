@@ -19,3 +19,9 @@ class Config:
 
     with open(BASE_DIR / "languages.json", "r", encoding="utf-8") as f:
         ALLOWED_LANGUAGES = set(json.load(f)["languages"])
+
+    # DB
+    DATABASE_URL: str = os.getenv(
+        "DATABASE_URL",
+        "sqlite+aiosqlite:///:memory:",
+    )
