@@ -40,5 +40,7 @@ class CreateCountryService:
         await self.uow.countries.add(country)
         await self.uow.commit()
 
-        logger.info("Country created successfully: country_id=%s", country.id.value)
+        logger.info(
+            "Country created successfully: country_code=%s", country.country_code.value
+        )
         return country

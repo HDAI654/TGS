@@ -17,6 +17,7 @@ class CreateChannelService:
         self,
         name: str,
         category: str,
+        language: str,
         country_code: str,
         is_geo_blocked: bool,
         **kwargs,
@@ -27,6 +28,7 @@ class CreateChannelService:
         channel = ChannelFactory.create(
             name=name,
             category=category,
+            language=language,
             country_code=country_code,
             is_geo_blocked=is_geo_blocked,
         )
