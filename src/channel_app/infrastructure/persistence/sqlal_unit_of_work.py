@@ -6,6 +6,9 @@ from src.channel_app.domain.ports.unit_of_work_interface import (
 from src.channel_app.infrastructure.persistence.sqlal_country_repo import (
     SQLAL_CountryRepository,
 )
+from src.channel_app.infrastructure.persistence.sqlal_channel_repo import (
+    SQLAL_ChannelRepository,
+)
 from sqlalchemy.exc import (
     OperationalError,
     TimeoutError,
@@ -26,7 +29,7 @@ class SQLAL_UnitOfWork(IUnitOfWork):
         self._session = session
 
         self.countries = SQLAL_CountryRepository(session)
-        # channels: IChannelRepository
+        self.channels = SQLAL_ChannelRepository(session)
 
     async def commit(self) -> None:
         logger.debug("Committing transaction")

@@ -253,7 +253,6 @@ class SQLAL_CountryRepository:
             models = result.scalars().all()
             for model in models:
                 country_dict = {
-                    "id": model.id,
                     "country_code": model.country_code,
                     "country_name": model.country_name,
                     "capital": model.capital,
