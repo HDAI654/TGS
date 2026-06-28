@@ -11,6 +11,7 @@ from src.channel_app.application.remove_channel_url import RemoveChannelURLsServ
 from src.channel_app.presentation.graphql.v1.error_handler import error_handler
 from src.core.exceptions import (
     ChannelNotFoundError,
+    CountryNotFoundError,
     ChannelDuplicateError,
     URLNotFoundError,
     URLDuplicateError,
@@ -29,6 +30,7 @@ class ChannelMutation:
         logger,
         {
             ChannelDuplicateError: (None, ErrorCodes.DUPLICATE_CHANNEL, 409),
+            CountryNotFoundError: (None, ErrorCodes.COUNTRY_NOT_FOUND, 404),
         },
     )
     async def create_channel(

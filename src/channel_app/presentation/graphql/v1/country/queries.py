@@ -52,13 +52,10 @@ class CountryQuery:
     async def countries(
         self,
         info: strawberry.Info,
-        fields: list[str] | None = None,
         filters: JSON | None = None,
     ) -> list[CountryType]:
-        logger.info(
-            "GraphQL: Searching countries: fields=%s, filters=%s", fields, filters
-        )
+        logger.info("GraphQL: Searching countries: filters=%s", filters)
         uow: IUnitOfWork = info.context.get("uow")
         service = SearchCountryService(uow)
-        results = await service.execute(fields or [], filters or {})
-        return [CountryType(**r) for r in results]
+        results = await service.execute(filters or {})
+        return [CountryType.from_entity(r) for r in results]

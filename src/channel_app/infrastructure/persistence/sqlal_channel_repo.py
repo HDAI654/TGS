@@ -235,12 +235,6 @@ class SQLAL_ChannelRepository:
                     "language": model.language,
                     "country_code": model.country_code,
                     "is_geo_blocked": model.is_geo_blocked,
-                    "created_at": (
-                        model.created_at.isoformat() if model.created_at else None
-                    ),
-                    "updated_at": (
-                        model.updated_at.isoformat() if model.updated_at else None
-                    ),
                 }
                 countries.append(channel_dict)
 

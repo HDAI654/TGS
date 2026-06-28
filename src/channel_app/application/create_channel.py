@@ -2,6 +2,7 @@ import logging
 from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
 from src.channel_app.domain.entities.channel import ChannelEntity
 from src.channel_app.domain.factories.channel_factory import ChannelFactory
+from src.core.exceptions import CountryNotFoundError
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +33,11 @@ class CreateChannelService:
             country_code=country_code,
             is_geo_blocked=is_geo_blocked,
         )
+
+        if await self.uow.countries.exists_by_code(channel.country_code) is False:
+            raise CountryNotFoundError(
+                f"Country not found: country_code={channel.country_code.value}"
+            )
 
         await self.uow.channels.add(channel)
         await self.uow.commit()

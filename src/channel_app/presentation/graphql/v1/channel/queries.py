@@ -53,16 +53,13 @@ class ChannelQuery:
     async def channels(
         self,
         info: strawberry.Info,
-        fields: list[str] | None = None,
         filters: JSON | None = None,
     ) -> list[ChannelType]:
-        logger.info(
-            "GraphQL: Searching channels: fields=%s, filters=%s", fields, filters
-        )
+        logger.info("GraphQL: Searching channels: filters=%s", filters)
         uow: IUnitOfWork = info.context.get("uow")
         service = SearchChannelService(uow)
-        results = await service.execute(fields or [], filters or {})
-        return [ChannelType(**r) for r in results]
+        results = await service.execute(filters or {})
+        return [ChannelType.from_entity(r) for r in results]
 
     @strawberry.field
     @error_handler(

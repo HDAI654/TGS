@@ -260,12 +260,6 @@ class SQLAL_CountryRepository:
                     "timezone": model.timezone,
                     "has_channels": model.has_channels,
                     "channel_count": model.channel_count,
-                    "created_at": (
-                        model.created_at.isoformat() if model.created_at else None
-                    ),
-                    "updated_at": (
-                        model.updated_at.isoformat() if model.updated_at else None
-                    ),
                 }
                 countries.append(country_dict)
 

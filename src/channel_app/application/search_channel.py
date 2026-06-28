@@ -2,6 +2,7 @@ import logging
 from typing import Any
 from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
 from src.channel_app.domain.entities.channel import ChannelEntity
+from src.channel_app.domain.factories.channel_factory import ChannelFactory
 
 logger = logging.getLogger(__name__)
 
@@ -13,15 +14,15 @@ class SearchChannelService:
     ):
         self.uow = uow
 
-    async def execute(
-        self, fields: list[str], filters: dict[str, Any]
-    ) -> list[ChannelEntity]:
-        logger.info("Searching for channels: fields=%s, filters=%s", fields, filters)
+    async def execute(self, filters: dict[str, Any]) -> list[ChannelEntity]:
+        logger.info("Searching for channels: filters=%s", filters)
 
         channels = await self.uow.channels.search(
-            fields=fields,
+            fields=[],
             filters=filters,
         )
+
+        channels = [ChannelFactory.create(**c) for c in channels]
 
         logger.info("Successfully found %s channels", len(channels))
 
