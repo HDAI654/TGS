@@ -14,6 +14,8 @@ from src.channel_app.domain.value_objects.is_geo_blocked import IsGeoBlocked
 from src.core.id_vo import ID
 from src.core.exceptions import (
     ChannelNotFoundError,
+    ChannelDuplicateError,
+    URLDuplicateError,
     NoChangesError,
     InvalidFieldError,
     URLNotFoundError,
@@ -122,6 +124,22 @@ class TestChannelRepo:
         assert saved_channel.language == "eng"
         assert saved_channel.country_code == "US"
         assert saved_channel.is_geo_blocked is False
+
+    async def test_add_duplicate(self, repo):
+        channel_id = ID("ewd000fvrlknis")
+        channel = ChannelFactory.create(
+            id=channel_id.value,
+            name="Fox News",
+            category="News",
+            language="eng",
+            country_code="US",
+            is_geo_blocked=False,
+        )
+
+        await repo.add(channel)
+
+        with pytest.raises(ChannelDuplicateError):
+            await repo.add(channel)
 
     async def test_get_by_id_successfully(self, repo, channel_entity, channel_seed):
         result = await repo.get_by_id(channel_entity.id)
@@ -290,6 +308,16 @@ class TestChannelRepo:
         assert saved_url.nano_id == url.id.value
         assert saved_url.channel_id == channel_entity.id.value
         assert saved_url.url == "https://www.bbc.com"
+
+    async def test_add_new_url_duplicate(self, repo, db_session, channel_entity):
+        url = URLFactory.create(
+            url="https://www.bbc.com",
+        )
+
+        await repo.add_new_url(channel_entity.id, url)
+
+        with pytest.raises(URLDuplicateError):
+            await repo.add_new_url(channel_entity.id, url)
 
     async def test_add_new_url_multiple_urls(self, repo, db_session, channel_entity):
         url1 = URLFactory.create(url="https://www.cnn.com")

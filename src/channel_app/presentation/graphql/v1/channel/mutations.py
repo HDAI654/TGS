@@ -8,6 +8,15 @@ from src.channel_app.application.edit_channel import EditChannelService
 from src.channel_app.application.delete_channel import DeleteChannelService
 from src.channel_app.application.add_channel_url import AddChannelURLsService
 from src.channel_app.application.remove_channel_url import RemoveChannelURLsService
+from src.channel_app.presentation.graphql.v1.error_handler import error_handler
+from src.core.exceptions import (
+    ChannelNotFoundError,
+    ChannelDuplicateError,
+    URLNotFoundError,
+    URLDuplicateError,
+    NoChangesError,
+)
+from src.channel_app.presentation.graphql.v1.error_code import ErrorCodes
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +24,13 @@ logger = logging.getLogger(__name__)
 @strawberry.type
 class ChannelMutation:
     @strawberry.mutation
+    @error_handler(
+        "create_channel",
+        logger,
+        {
+            ChannelDuplicateError: (None, ErrorCodes.DUPLICATE_CHANNEL, 409),
+        },
+    )
     async def create_channel(
         self,
         name: str,
@@ -37,6 +53,23 @@ class ChannelMutation:
         return ChannelType.from_entity(entity)
 
     @strawberry.mutation
+    @error_handler(
+        "update_channel",
+        logger,
+        {
+            ChannelNotFoundError: (
+                None,
+                ErrorCodes.CHANNEL_NOT_FOUND,
+                404,
+            ),
+            NoChangesError: (
+                None,
+                ErrorCodes.NO_CHANGES_ERROR,
+                400,
+            ),
+            ChannelDuplicateError: (None, ErrorCodes.DUPLICATE_CHANNEL, 409),
+        },
+    )
     async def update_channel(
         self,
         channel_id: str,
@@ -59,6 +92,17 @@ class ChannelMutation:
         return True
 
     @strawberry.mutation
+    @error_handler(
+        "delete_channel",
+        logger,
+        {
+            ChannelNotFoundError: (
+                None,
+                ErrorCodes.CHANNEL_NOT_FOUND,
+                404,
+            )
+        },
+    )
     async def delete_channel(
         self,
         channel_id: str,
@@ -71,6 +115,13 @@ class ChannelMutation:
         return True
 
     @strawberry.mutation
+    @error_handler(
+        "add_channel_url",
+        logger,
+        {
+            URLDuplicateError: (None, ErrorCodes.DUPLICATE_URL, 409),
+        },
+    )
     async def add_channel_url(
         self,
         channel_id: str,
@@ -84,6 +135,17 @@ class ChannelMutation:
         return True
 
     @strawberry.mutation
+    @error_handler(
+        "remove_channel_url",
+        logger,
+        {
+            URLNotFoundError: (
+                None,
+                ErrorCodes.URL_NOT_FOUND,
+                404,
+            )
+        },
+    )
     async def remove_channel_url(
         self,
         url_id: str,

@@ -5,6 +5,13 @@ from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
 from src.channel_app.application.create_country import CreateCountryService
 from src.channel_app.application.edit_country import EditCountryService
 from src.channel_app.application.delete_country import DeleteCountryService
+from src.channel_app.presentation.graphql.v1.error_handler import error_handler
+from src.core.exceptions import (
+    CountryNotFoundError,
+    CountryDuplicateError,
+    NoChangesError,
+)
+from src.channel_app.presentation.graphql.v1.error_code import ErrorCodes
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +19,13 @@ logger = logging.getLogger(__name__)
 @strawberry.type
 class CountryMutation:
     @strawberry.mutation
+    @error_handler(
+        "create_country",
+        logger,
+        {
+            CountryDuplicateError: (None, ErrorCodes.DUPLICATE_COUNTRY, 409),
+        },
+    )
     async def create_country(
         self,
         country_code: str,
@@ -31,9 +45,27 @@ class CountryMutation:
             timezone=timezone,
             channel_count=channel_count,
         )
+        logger.info("GraphQL: Creating country finished: code=%s", country_code)
         return CountryType.from_entity(entity)
 
     @strawberry.mutation
+    @error_handler(
+        "update_country",
+        logger,
+        {
+            CountryNotFoundError: (
+                None,
+                ErrorCodes.COUNTRY_NOT_FOUND,
+                404,
+            ),
+            NoChangesError: (
+                None,
+                ErrorCodes.NO_CHANGES_ERROR,
+                400,
+            ),
+            CountryDuplicateError: (None, ErrorCodes.DUPLICATE_COUNTRY, 409),
+        },
+    )
     async def update_country(
         self,
         country_code: str,
@@ -56,6 +88,17 @@ class CountryMutation:
         return True
 
     @strawberry.mutation
+    @error_handler(
+        "delete_country",
+        logger,
+        {
+            CountryNotFoundError: (
+                None,
+                ErrorCodes.COUNTRY_NOT_FOUND,
+                404,
+            )
+        },
+    )
     async def delete_country(
         self,
         country_code: str,

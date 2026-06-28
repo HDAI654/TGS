@@ -12,9 +12,9 @@ from src.channel_app.domain.value_objects.timezone import Timezone
 from src.channel_app.domain.value_objects.count import Count
 from src.core.exceptions import (
     CountryNotFoundError,
+    CountryDuplicateError,
     NoChangesError,
     InvalidFieldError,
-    DatabaseOperationError,
 )
 
 
@@ -101,6 +101,20 @@ class TestCountryRepo:
         assert saved_country.capital == "Paris"
         assert saved_country.timezone == "Europe/Paris"
         assert saved_country.channel_count == 8
+
+    async def test_add_duplicate(self, repo):
+        country = CountryFactory.create(
+            country_code="FR",
+            country_name="France",
+            capital="Paris",
+            timezone="Europe/Paris",
+            channel_count=8,
+        )
+
+        await repo.add(country)
+
+        with pytest.raises(CountryDuplicateError):
+            await repo.add(country)
 
     async def test_get_by_code_successfully(self, repo, country_entity, country_seed):
         result = await repo.get_by_code(country_entity.country_code)

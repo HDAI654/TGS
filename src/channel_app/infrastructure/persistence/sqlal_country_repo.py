@@ -18,6 +18,7 @@ from sqlalchemy.exc import (
 )
 from src.core.exceptions import (
     CountryNotFoundError,
+    CountryDuplicateError,
     NoChangesError,
     InvalidFieldError,
     DatabaseOperationError,
@@ -336,6 +337,11 @@ class SQLAL_CountryRepository:
         try:
             return await coro(*args, **kwargs)
         except IntegrityError as e:
+            error_msg = str(e).lower()
+            if "duplicate key" in error_msg or "unique constraint" in error_msg:
+                raise CountryDuplicateError(
+                    f"Another country with same unique field already exists"
+                )
             logger.exception(f"Database integrity error during {operation}")
             raise DatabaseOperationError(f"Database integrity error: {e}") from e
         except OperationalError as e:

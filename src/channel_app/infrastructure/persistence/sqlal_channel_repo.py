@@ -21,6 +21,8 @@ from sqlalchemy.exc import (
 )
 from src.core.exceptions import (
     ChannelNotFoundError,
+    ChannelDuplicateError,
+    URLDuplicateError,
     NoChangesError,
     InvalidFieldError,
     DatabaseOperationError,
@@ -374,6 +376,15 @@ class SQLAL_ChannelRepository:
         try:
             return await coro(*args, **kwargs)
         except IntegrityError as e:
+            error_msg = str(e).lower()
+            if "duplicate key" in error_msg or "unique constraint" in error_msg:
+                if "url" in operation:
+                    raise URLDuplicateError(
+                        f"Another url with same unique field already exists"
+                    )
+                raise ChannelDuplicateError(
+                    f"Another channel with same unique field already exists"
+                )
             logger.exception(f"Database integrity error during {operation}")
             raise DatabaseOperationError(f"Database integrity error: {e}") from e
         except OperationalError as e:

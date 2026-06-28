@@ -6,6 +6,9 @@ from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
 from src.channel_app.application.get_channel import GetChannelService
 from src.channel_app.application.search_channel import SearchChannelService
 from src.channel_app.application.get_channel_urls import GetChannelURLsService
+from src.channel_app.presentation.graphql.v1.error_handler import error_handler
+from src.core.exceptions import ChannelNotFoundError, InvalidFieldError
+from src.channel_app.presentation.graphql.v1.error_code import ErrorCodes
 
 logger = logging.getLogger(__name__)
 
@@ -13,6 +16,17 @@ logger = logging.getLogger(__name__)
 @strawberry.type
 class ChannelQuery:
     @strawberry.field
+    @error_handler(
+        "get_channel",
+        logger,
+        {
+            ChannelNotFoundError: (
+                None,
+                ErrorCodes.CHANNEL_NOT_FOUND,
+                404,
+            )
+        },
+    )
     async def channel(
         self,
         channel_id: str,
@@ -25,6 +39,17 @@ class ChannelQuery:
         return ChannelType.from_entity(entity)
 
     @strawberry.field
+    @error_handler(
+        "search_channels",
+        logger,
+        {
+            InvalidFieldError: (
+                None,
+                ErrorCodes.INVALID_FIELD_ERROR,
+                404,
+            )
+        },
+    )
     async def channels(
         self,
         info: strawberry.Info,
@@ -40,6 +65,17 @@ class ChannelQuery:
         return [ChannelType(**r) for r in results]
 
     @strawberry.field
+    @error_handler(
+        "get_channel_urls",
+        logger,
+        {
+            ChannelNotFoundError: (
+                None,
+                ErrorCodes.CHANNEL_NOT_FOUND,
+                404,
+            )
+        },
+    )
     async def channel_urls(
         self,
         channel_id: str,

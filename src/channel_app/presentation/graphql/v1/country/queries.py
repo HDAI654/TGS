@@ -5,6 +5,9 @@ from src.channel_app.presentation.graphql.v1.country.types import CountryType
 from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
 from src.channel_app.application.get_country import GetCountryService
 from src.channel_app.application.search_country import SearchCountryService
+from src.channel_app.presentation.graphql.v1.error_handler import error_handler
+from src.core.exceptions import CountryNotFoundError, InvalidFieldError
+from src.channel_app.presentation.graphql.v1.error_code import ErrorCodes
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +15,17 @@ logger = logging.getLogger(__name__)
 @strawberry.type
 class CountryQuery:
     @strawberry.field
+    @error_handler(
+        "get_country",
+        logger,
+        {
+            CountryNotFoundError: (
+                None,
+                ErrorCodes.COUNTRY_NOT_FOUND,
+                404,
+            )
+        },
+    )
     async def country(
         self,
         country_code: str,
@@ -24,6 +38,17 @@ class CountryQuery:
         return CountryType.from_entity(entity)
 
     @strawberry.field
+    @error_handler(
+        "search_countries",
+        logger,
+        {
+            InvalidFieldError: (
+                None,
+                ErrorCodes.INVALID_FIELD_ERROR,
+                404,
+            )
+        },
+    )
     async def countries(
         self,
         info: strawberry.Info,
