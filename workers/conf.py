@@ -10,5 +10,8 @@ load_dotenv(env_file)
 
 class Config:
     # App
-    APP_NAME = os.getenv("APP_NAME", "MyApp")
+    APP_NAME: str = os.getenv("APP_NAME", "MyApp")
     APP_ENV: str = os.getenv("APP_ENV", "development")
+
+    # Cache
+    REDIS_URL: str = os.getenv("REDIS_URL", "edis://localhost:6379")
