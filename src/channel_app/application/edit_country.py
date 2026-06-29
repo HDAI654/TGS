@@ -1,9 +1,9 @@
 import logging
-from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
-from src.channel_app.domain.value_objects.country_code import CountryCode
-from src.channel_app.domain.value_objects.name import Name
-from src.channel_app.domain.value_objects.timezone import Timezone
-from src.channel_app.domain.value_objects.count import Count
+from shared.domain.ports.unit_of_work_interface import IUnitOfWork
+from shared.domain.value_objects.country_code import CountryCode
+from shared.domain.value_objects.name import Name
+from shared.domain.value_objects.timezone import Timezone
+from shared.domain.value_objects.count import Count
 from src.core.exceptions import InvalidCountryCodeError, CountryNotFoundError
 
 logger = logging.getLogger(__name__)

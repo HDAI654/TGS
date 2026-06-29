@@ -1,8 +1,7 @@
 import logging
 from typing import Any
-from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
-from src.channel_app.domain.entities.channel import ChannelEntity
-from src.channel_app.domain.factories.channel_factory import ChannelFactory
+from shared.domain.ports.unit_of_work_interface import IUnitOfWork
+from shared.domain.entities.channel import ChannelEntity
 
 logger = logging.getLogger(__name__)
 

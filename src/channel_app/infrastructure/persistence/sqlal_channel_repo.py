@@ -3,14 +3,14 @@ from typing import Any
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import update, select, delete, and_, exists, func
 from sqlalchemy.dialects.postgresql import insert
-from src.channel_app.domain.entities.channel import ChannelEntity
-from src.channel_app.domain.entities.url_entity import URLEntity
-from src.channel_app.domain.factories.channel_factory import ChannelFactory
-from src.channel_app.domain.factories.url_factory import URLFactory
-from src.channel_app.domain.value_objects.country_code import CountryCode
-from src.channel_app.domain.value_objects.name import Name
-from src.channel_app.domain.value_objects.category import Category
-from src.channel_app.domain.value_objects.is_geo_blocked import IsGeoBlocked
+from shared.domain.entities.channel import ChannelEntity
+from shared.domain.entities.url_entity import URLEntity
+from shared.domain.factories.channel_factory import ChannelFactory
+from shared.domain.factories.url_factory import URLFactory
+from shared.domain.value_objects.country_code import CountryCode
+from shared.domain.value_objects.name import Name
+from shared.domain.value_objects.category import Category
+from shared.domain.value_objects.is_geo_blocked import IsGeoBlocked
 from src.channel_app.infrastructure.persistence.models import ChannelModel, URLModel
 from src.core.id_vo import ID
 from sqlalchemy.exc import (

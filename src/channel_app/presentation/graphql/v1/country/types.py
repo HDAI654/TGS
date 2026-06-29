@@ -1,5 +1,5 @@
 import strawberry
-from src.channel_app.domain.entities.country import CountryEntity
+from shared.domain.entities.country import CountryEntity
 
 
 @strawberry.type

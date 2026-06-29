@@ -1,6 +1,6 @@
 import strawberry
-from src.channel_app.domain.entities.channel import ChannelEntity
-from src.channel_app.domain.entities.url_entity import URLEntity
+from shared.domain.entities.channel import ChannelEntity
+from shared.domain.entities.url_entity import URLEntity
 
 
 @strawberry.type

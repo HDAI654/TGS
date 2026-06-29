@@ -1,6 +1,6 @@
 import logging
-from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
-from src.channel_app.domain.entities.url_entity import URLEntity
+from shared.domain.ports.unit_of_work_interface import IUnitOfWork
+from shared.domain.entities.url_entity import URLEntity
 from src.core.id_vo import ID
 from src.core.exceptions import InvalidIDError, ChannelNotFoundError
 

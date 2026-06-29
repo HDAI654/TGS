@@ -1,10 +1,10 @@
 import logging
-from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
+from shared.domain.ports.unit_of_work_interface import IUnitOfWork
 from src.core.id_vo import ID
-from src.channel_app.domain.value_objects.name import Name
-from src.channel_app.domain.value_objects.category import Category
-from src.channel_app.domain.value_objects.country_code import CountryCode
-from src.channel_app.domain.value_objects.is_geo_blocked import IsGeoBlocked
+from shared.domain.value_objects.name import Name
+from shared.domain.value_objects.category import Category
+from shared.domain.value_objects.country_code import CountryCode
+from shared.domain.value_objects.is_geo_blocked import IsGeoBlocked
 from src.core.exceptions import InvalidIDError, ChannelNotFoundError
 
 logger = logging.getLogger(__name__)

@@ -1,7 +1,7 @@
 import logging
-from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
-from src.channel_app.domain.entities.country import CountryEntity
-from src.channel_app.domain.value_objects.country_code import CountryCode
+from shared.domain.ports.unit_of_work_interface import IUnitOfWork
+from shared.domain.entities.country import CountryEntity
+from shared.domain.value_objects.country_code import CountryCode
 from src.core.exceptions import InvalidCountryCodeError, CountryNotFoundError
 
 logger = logging.getLogger(__name__)

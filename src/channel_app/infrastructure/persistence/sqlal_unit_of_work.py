@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 import logging
-from src.channel_app.domain.ports.unit_of_work_interface import (
+from shared.domain.ports.unit_of_work_interface import (
     IUnitOfWork,
 )
 from src.channel_app.infrastructure.persistence.sqlal_country_repo import (

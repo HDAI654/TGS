@@ -2,7 +2,7 @@ import strawberry
 import logging
 from typing import Optional
 from src.channel_app.presentation.graphql.v1.channel.types import ChannelType
-from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
+from shared.domain.ports.unit_of_work_interface import IUnitOfWork
 from src.channel_app.application.create_channel import CreateChannelService
 from src.channel_app.application.edit_channel import EditChannelService
 from src.channel_app.application.delete_channel import DeleteChannelService

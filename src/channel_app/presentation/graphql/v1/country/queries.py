@@ -2,7 +2,7 @@ import strawberry
 import logging
 from strawberry.scalars import JSON
 from src.channel_app.presentation.graphql.v1.country.types import CountryType
-from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
+from shared.domain.ports.unit_of_work_interface import IUnitOfWork
 from src.channel_app.application.get_country import GetCountryService
 from src.channel_app.application.search_country import SearchCountryService
 from src.channel_app.presentation.graphql.v1.error_handler import error_handler

@@ -1,6 +1,6 @@
 import logging
-from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
-from src.channel_app.domain.ports.crawler_interface import ICrawler
+from shared.domain.ports.unit_of_work_interface import IUnitOfWork
+from shared.domain.ports.crawler_interface import ICrawler
 
 logger = logging.getLogger(__name__)
 

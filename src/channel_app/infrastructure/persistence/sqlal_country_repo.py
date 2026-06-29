@@ -3,12 +3,12 @@ from typing import Any
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import update, select, delete, and_, exists, func
 from sqlalchemy.dialects.postgresql import insert
-from src.channel_app.domain.entities.country import CountryEntity
-from src.channel_app.domain.factories.country_factory import CountryFactory
-from src.channel_app.domain.value_objects.country_code import CountryCode
-from src.channel_app.domain.value_objects.name import Name
-from src.channel_app.domain.value_objects.timezone import Timezone
-from src.channel_app.domain.value_objects.count import Count
+from shared.domain.entities.country import CountryEntity
+from shared.domain.factories.country_factory import CountryFactory
+from shared.domain.value_objects.country_code import CountryCode
+from shared.domain.value_objects.name import Name
+from shared.domain.value_objects.timezone import Timezone
+from shared.domain.value_objects.count import Count
 from src.channel_app.infrastructure.persistence.models import CountryModel
 from sqlalchemy.exc import (
     IntegrityError,

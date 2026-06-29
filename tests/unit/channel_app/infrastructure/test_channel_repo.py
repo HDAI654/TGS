@@ -5,12 +5,12 @@ from src.core.database import engine, Base, get_async_session
 from src.channel_app.infrastructure.persistence.sqlal_channel_repo import (
     SQLAL_ChannelRepository,
 )
-from src.channel_app.domain.factories.channel_factory import ChannelFactory
-from src.channel_app.domain.factories.url_factory import URLFactory
-from src.channel_app.domain.value_objects.country_code import CountryCode
-from src.channel_app.domain.value_objects.name import Name
-from src.channel_app.domain.value_objects.category import Category
-from src.channel_app.domain.value_objects.is_geo_blocked import IsGeoBlocked
+from shared.domain.factories.channel_factory import ChannelFactory
+from shared.domain.factories.url_factory import URLFactory
+from shared.domain.value_objects.country_code import CountryCode
+from shared.domain.value_objects.name import Name
+from shared.domain.value_objects.category import Category
+from shared.domain.value_objects.is_geo_blocked import IsGeoBlocked
 from src.core.id_vo import ID
 from src.core.exceptions import (
     ChannelNotFoundError,

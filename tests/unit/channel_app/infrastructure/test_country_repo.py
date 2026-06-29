@@ -5,11 +5,11 @@ from src.core.database import engine, Base, get_async_session
 from src.channel_app.infrastructure.persistence.sqlal_country_repo import (
     SQLAL_CountryRepository,
 )
-from src.channel_app.domain.factories.country_factory import CountryFactory
-from src.channel_app.domain.value_objects.country_code import CountryCode
-from src.channel_app.domain.value_objects.name import Name
-from src.channel_app.domain.value_objects.timezone import Timezone
-from src.channel_app.domain.value_objects.count import Count
+from shared.domain.factories.country_factory import CountryFactory
+from shared.domain.value_objects.country_code import CountryCode
+from shared.domain.value_objects.name import Name
+from shared.domain.value_objects.timezone import Timezone
+from shared.domain.value_objects.count import Count
 from src.core.exceptions import (
     CountryNotFoundError,
     CountryDuplicateError,

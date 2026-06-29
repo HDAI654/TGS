@@ -2,7 +2,7 @@ import strawberry
 import logging
 from strawberry.scalars import JSON
 from src.channel_app.presentation.graphql.v1.channel.types import ChannelType, URLType
-from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
+from shared.domain.ports.unit_of_work_interface import IUnitOfWork
 from src.channel_app.application.get_channel import GetChannelService
 from src.channel_app.application.search_channel import SearchChannelService
 from src.channel_app.application.get_channel_urls import GetChannelURLsService

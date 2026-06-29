@@ -1,7 +1,7 @@
 import strawberry
 import logging
 from src.channel_app.presentation.graphql.v1.country.types import CountryType
-from src.channel_app.domain.ports.unit_of_work_interface import IUnitOfWork
+from shared.domain.ports.unit_of_work_interface import IUnitOfWork
 from src.channel_app.application.create_country import CreateCountryService
 from src.channel_app.application.edit_country import EditCountryService
 from src.channel_app.application.delete_country import DeleteCountryService
