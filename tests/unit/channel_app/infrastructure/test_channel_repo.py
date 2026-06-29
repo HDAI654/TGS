@@ -220,57 +220,47 @@ class TestChannelRepo:
             await repo.delete(non_existent_channel_id)
 
     async def test_search_all_channels(self, repo, channel_seed, second_channel_seed):
-        result = await repo.search(fields=[], filters={})
+        result = await repo.search(filters={})
 
         assert len(result) == 2
-        ids = {c["id"] for c in result}
+        ids = {c.id.value for c in result}
         assert channel_seed.nano_id in ids
         assert second_channel_seed.nano_id in ids
 
-    async def test_search_with_field_projection(self, repo, channel_seed):
-        result = await repo.search(fields=["name", "country_code"], filters={})
-
-        assert len(result) == 1
-        assert "name" in result[0]
-        assert "country_code" in result[0]
-        assert "category" not in result[0]
-        assert "language" not in result[0]
-
     async def test_search_with_exact_filter(self, repo, channel_seed):
-        result = await repo.search(fields=[], filters={"country_code": "US"})
+        result = await repo.search(filters={"country_code": "US"})
 
         assert len(result) == 1
-        assert result[0]["id"] == channel_seed.nano_id
-        assert result[0]["name"] == "CNN"
+        assert result[0].id.value == channel_seed.nano_id
+        assert result[0].name.value == "CNN"
 
     async def test_search_with_partial_match_filter(self, repo, channel_seed):
-        result = await repo.search(fields=[], filters={"name": "CN"})
+        result = await repo.search(filters={"name": "CN"})
 
         assert len(result) == 1
-        assert result[0]["id"] == channel_seed.nano_id
-        assert result[0]["name"] == "CNN"
+        assert result[0].id.value == channel_seed.nano_id
+        assert result[0].name.value == "CNN"
 
     async def test_search_with_id_filter(self, repo, channel_seed):
-        result = await repo.search(fields=[], filters={"id": channel_seed.nano_id})
+        result = await repo.search(filters={"id": channel_seed.nano_id})
 
         assert len(result) == 1
-        assert result[0]["id"] == channel_seed.nano_id
+        assert result[0].id.value == channel_seed.nano_id
 
     async def test_search_with_language_filter(self, repo, channel_seed):
-        result = await repo.search(fields=[], filters={"language": "eng"})
+        result = await repo.search(filters={"language": "eng"})
 
         assert len(result) == 1
-        assert result[0]["id"] == channel_seed.nano_id
+        assert result[0].id.value == channel_seed.nano_id
 
     async def test_search_with_geo_blocked_filter(self, repo, channel_seed):
-        result = await repo.search(fields=[], filters={"is_geo_blocked": False})
+        result = await repo.search(filters={"is_geo_blocked": False})
 
         assert len(result) == 1
-        assert result[0]["id"] == channel_seed.nano_id
+        assert result[0].id.value == channel_seed.nano_id
 
     async def test_search_with_multiple_filters(self, repo, channel_seed):
         result = await repo.search(
-            fields=[],
             filters={
                 "country_code": "US",
                 "category": "News",
@@ -278,20 +268,16 @@ class TestChannelRepo:
         )
 
         assert len(result) == 1
-        assert result[0]["id"] == channel_seed.nano_id
+        assert result[0].id.value == channel_seed.nano_id
 
     async def test_search_returns_empty_list_for_no_matches(self, repo):
-        result = await repo.search(fields=[], filters={"country_code": "XX"})
+        result = await repo.search(filters={"country_code": "XX"})
 
         assert result == []
 
-    async def test_search_raises_invalid_field_error(self, repo):
-        with pytest.raises(InvalidFieldError):
-            await repo.search(fields=["invalid_field"], filters={})
-
     async def test_search_raises_invalid_filter_error(self, repo):
         with pytest.raises(InvalidFieldError):
-            await repo.search(fields=[], filters={"invalid_filter": "value"})
+            await repo.search(filters={"invalid_filter": "value"})
 
     async def test_add_new_url_successfully(self, repo, db_session, channel_entity):
         url = URLFactory.create(

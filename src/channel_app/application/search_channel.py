@@ -18,11 +18,8 @@ class SearchChannelService:
         logger.info("Searching for channels: filters=%s", filters)
 
         channels = await self.uow.channels.search(
-            fields=[],
             filters=filters,
         )
-
-        channels = [ChannelFactory.create(**c) for c in channels]
 
         logger.info("Successfully found %s channels", len(channels))
 

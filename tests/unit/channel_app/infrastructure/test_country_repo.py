@@ -203,48 +203,36 @@ class TestCountryRepo:
             await repo.delete(non_existent_country_code)
 
     async def test_search_all_countries(self, repo, country_seed, second_country_seed):
-        result = await repo.search(fields=[], filters={})
+        result = await repo.search(filters={})
 
         assert len(result) == 2
-        assert result[0]["country_code"] == "US"
-        assert result[1]["country_code"] == "CA"
-
-    async def test_search_with_field_projection(self, repo, country_seed):
-        result = await repo.search(fields=["country_code", "country_name"], filters={})
-
-        assert len(result) == 1
-        assert "country_code" in result[0]
-        assert "country_name" in result[0]
-        assert "capital" not in result[0]
-        assert "timezone" not in result[0]
+        assert result[0].country_code.value == "US"
+        assert result[1].country_code.value == "CA"
 
     async def test_search_with_exact_filter(self, repo, country_seed):
-        result = await repo.search(fields=[], filters={"country_code": "US"})
+        result = await repo.search(filters={"country_code": "US"})
 
         assert len(result) == 1
-        assert result[0]["country_code"] == "US"
-        assert result[0]["country_name"] == "United States"
+        assert result[0].country_code.value == "US"
+        assert result[0].country_name.value == "United States"
 
     async def test_search_with_partial_match_filter(self, repo, country_seed):
-        result = await repo.search(fields=[], filters={"country_name": "United"})
+        result = await repo.search(filters={"country_name": "United"})
 
         assert len(result) == 1
-        assert result[0]["country_code"] == "US"
+        assert result[0].country_code.value == "US"
 
     async def test_search_with_channel_count_range(
         self, repo, country_seed, second_country_seed
     ):
-        result = await repo.search(
-            fields=[], filters={"channel_count": {"min": 8, "max": 15}}
-        )
+        result = await repo.search(filters={"channel_count": {"min": 8, "max": 15}})
 
         assert len(result) == 1
-        assert result[0]["country_code"] == "US"
-        assert result[0]["channel_count"] == 10
+        assert result[0].country_code.value == "US"
+        assert result[0].channel_count.value == 10
 
     async def test_search_with_multiple_filters(self, repo, country_seed):
         result = await repo.search(
-            fields=[],
             filters={
                 "country_code": "US",
                 "has_channels": True,
@@ -252,17 +240,13 @@ class TestCountryRepo:
         )
 
         assert len(result) == 1
-        assert result[0]["country_code"] == "US"
+        assert result[0].country_code.value == "US"
 
     async def test_search_returns_empty_list_for_no_matches(self, repo):
-        result = await repo.search(fields=[], filters={"country_code": "XX"})
+        result = await repo.search(filters={"country_code": "XX"})
 
         assert result == []
 
-    async def test_search_raises_invalid_field_error(self, repo):
-        with pytest.raises(InvalidFieldError):
-            await repo.search(fields=["invalid_field"], filters={})
-
     async def test_search_raises_invalid_filter_error(self, repo):
         with pytest.raises(InvalidFieldError):
-            await repo.search(fields=[], filters={"invalid_filter": "value"})
+            await repo.search(filters={"invalid_filter": "value"})

@@ -40,10 +40,8 @@ class IChannelRepository(ABC):
         pass
 
     @abstractmethod
-    async def search(
-        self, fields: list[str], filters: dict[str, Any]
-    ) -> list[dict[str, Any]]:
-        """Search channels by filters and return specified fields."""
+    async def search(self, filters: dict[str, Any]) -> list[ChannelEntity]:
+        """Search channels by filters."""
         pass
 
     @abstractmethod

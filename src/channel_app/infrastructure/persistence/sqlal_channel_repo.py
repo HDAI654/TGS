@@ -145,17 +145,12 @@ class SQLAL_ChannelRepository:
         logger.debug("Channel not found: channel_id=%s", channel_id.value)
         raise ChannelNotFoundError(f"Channel with id {channel_id.value!r} not found")
 
-    async def search(
-        self, fields: list[str], filters: dict[str, Any]
-    ) -> list[dict[str, Any]]:
-        """Search channels by filters and return specified fields."""
-        logger.info("Searching channels: fields=%s, filters=%s", fields, filters)
+    async def search(self, filters: dict[str, Any]) -> list[ChannelEntity]:
+        """Search channels by filters."""
+        logger.info("Searching channels: filters=%s", filters)
 
-        # Validate fields and filters against entity schema
+        # Validate fields against entity schema
         valid_fields = set(ChannelEntity.FIELD_TYPE_MAP.keys())
-
-        if fields and not set(fields).issubset(valid_fields):
-            raise InvalidFieldError(f"Invalid fields: {set(fields) - valid_fields}")
 
         if filters and not set(filters.keys()).issubset(valid_fields):
             raise InvalidFieldError(
@@ -172,19 +167,7 @@ class SQLAL_ChannelRepository:
             "is_geo_blocked": ChannelModel.is_geo_blocked,
         }
 
-        # Build query
-        if fields:
-            # Select only requested columns
-            columns_to_select = [
-                field_to_column[f] for f in fields if f in field_to_column
-            ]
-            # Always include id if not already included (needed for reference)
-            if "id" not in fields:
-                columns_to_select.append(ChannelModel.nano_id)
-            query = select(*columns_to_select)
-        else:
-            # Select all
-            query = select(ChannelModel)
+        query = select(ChannelModel)
 
         # ========== APPLY FILTERS ==========
         conditions = []
@@ -212,34 +195,21 @@ class SQLAL_ChannelRepository:
             "search_channel", self._session.execute, query
         )
 
-        countries = []
-        if fields:
-            rows = result.all()
+        models = result.scalars().all()
+        channels = [
+            ChannelFactory.create(
+                id=model.nano_id,
+                name=model.name,
+                category=model.category,
+                language=model.language,
+                country_code=model.country_code,
+                is_geo_blocked=model.is_geo_blocked,
+            )
+            for model in models
+        ]
 
-            # Determine field order in the result
-            selected_fields = [f for f in fields if f in field_to_column]
-            if "id" not in fields:
-                selected_fields.append("id")
-
-            # Convert each row tuple to dict
-            for row in rows:
-                channel_dict = dict(zip(selected_fields, row))
-                countries.append(channel_dict)
-        else:
-            models = result.scalars().all()
-            for model in models:
-                channel_dict = {
-                    "id": model.nano_id,
-                    "name": model.name,
-                    "category": model.category,
-                    "language": model.language,
-                    "country_code": model.country_code,
-                    "is_geo_blocked": model.is_geo_blocked,
-                }
-                countries.append(channel_dict)
-
-        logger.info("Found %s channels", len(countries))
-        return countries
+        logger.info("Found %s channels", len(channels))
+        return channels
 
     async def exists_by_id(self, channel_id: ID) -> bool:
         """Check if a channel exists by ID."""

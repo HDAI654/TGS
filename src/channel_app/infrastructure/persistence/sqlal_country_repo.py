@@ -166,17 +166,12 @@ class SQLAL_CountryRepository:
         logger.info("%s country codes found", len(country_codes))
         return country_codes
 
-    async def search(
-        self, fields: list[str], filters: dict[str, Any]
-    ) -> list[dict[str, Any]]:
-        """Search countries by filters and return specified fields."""
-        logger.info("Searching countries: fields=%s, filters=%s", fields, filters)
+    async def search(self, filters: dict[str, Any]) -> list[CountryEntity]:
+        """Search countries by filters."""
+        logger.info("Searching countries: filters=%s", filters)
 
         # Validate fields and filters against entity schema
         valid_fields = set(CountryEntity.FIELD_TYPE_MAP.keys())
-
-        if fields and not set(fields).issubset(valid_fields):
-            raise InvalidFieldError(f"Invalid fields: {set(fields) - valid_fields}")
 
         if filters and not set(filters.keys()).issubset(valid_fields):
             raise InvalidFieldError(
@@ -193,19 +188,7 @@ class SQLAL_CountryRepository:
             "channel_count": CountryModel.channel_count,
         }
 
-        # Build query
-        if fields:
-            # Select only requested columns
-            columns_to_select = [
-                field_to_column[f] for f in fields if f in field_to_column
-            ]
-            # Always include country_code if not already included (needed for reference)
-            if "country_code" not in fields:
-                columns_to_select.append(CountryModel.country_code)
-            query = select(*columns_to_select)
-        else:
-            # Select all
-            query = select(CountryModel)
+        query = select(CountryModel)
 
         # ========== APPLY FILTERS ==========
         conditions = []
@@ -237,31 +220,17 @@ class SQLAL_CountryRepository:
             "search_country", self._session.execute, query
         )
 
-        countries = []
-        if fields:
-            rows = result.all()
-
-            # Determine field order in the result
-            selected_fields = [f for f in fields if f in field_to_column]
-            if "country_code" not in fields:
-                selected_fields.append("country_code")
-
-            # Convert each row tuple to dict
-            for row in rows:
-                country_dict = dict(zip(selected_fields, row))
-                countries.append(country_dict)
-        else:
-            models = result.scalars().all()
-            for model in models:
-                country_dict = {
-                    "country_code": model.country_code,
-                    "country_name": model.country_name,
-                    "capital": model.capital,
-                    "timezone": model.timezone,
-                    "has_channels": model.has_channels,
-                    "channel_count": model.channel_count,
-                }
-                countries.append(country_dict)
+        models = result.scalars().all()
+        countries = [
+            CountryFactory.create(
+                country_code=model.country_code,
+                country_name=model.country_name,
+                capital=model.capital,
+                timezone=model.timezone,
+                channel_count=model.channel_count,
+            )
+            for model in models
+        ]
 
         logger.info("Found %s countries", len(countries))
         return countries

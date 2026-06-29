@@ -18,20 +18,8 @@ class SearchCountryService:
         logger.info("Searching for countries: filters=%s", filters)
 
         countries = await self.uow.countries.search(
-            fields=[],
             filters=filters,
         )
-
-        countries = [
-            CountryFactory.create(
-                country_code=c.get("country_code"),
-                country_name=c.get("country_name"),
-                capital=c.get("capital"),
-                timezone=c.get("timezone"),
-                channel_count=c.get("channel_count"),
-            )
-            for c in countries
-        ]
 
         logger.info("Successfully found %s countries", len(countries))
 

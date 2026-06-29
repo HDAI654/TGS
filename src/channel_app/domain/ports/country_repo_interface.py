@@ -43,10 +43,8 @@ class ICountryRepository(ABC):
         pass
 
     @abstractmethod
-    async def search(
-        self, fields: list[str], filters: dict[str, Any]
-    ) -> list[dict[str, Any]]:
-        """Search countries by filters and return specified fields."""
+    async def search(self, filters: dict[str, Any]) -> list[CountryEntity]:
+        """Search countries by filters."""
         pass
 
     @abstractmethod
