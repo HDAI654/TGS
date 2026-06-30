@@ -12,6 +12,6 @@ class ICrawler(ABC):
         pass
 
     @abstractmethod
-    async def extract_all_channels(self) -> list[ChannelEntity]:
+    async def extract_all_channels(self) -> dict[str, dict]:
         """Extract all channels."""
         pass
