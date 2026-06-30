@@ -1,4 +1,4 @@
-from src.core.crypto_utils import IDGenerator
+from shared.domain.crypto_utils import IDGenerator
 
 
 class TestIDGenerator:

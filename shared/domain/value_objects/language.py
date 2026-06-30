@@ -1,5 +1,5 @@
-from src.core.base_vo import BaseVO
-from src.core.exceptions import InvalidLanguageError
+from shared.domain.base_vo import BaseVO
+from shared.domain.exceptions import InvalidLanguageError
 from src.core.conf import Config
 
 

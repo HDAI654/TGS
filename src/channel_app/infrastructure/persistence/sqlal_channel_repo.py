@@ -12,7 +12,7 @@ from shared.domain.value_objects.name import Name
 from shared.domain.value_objects.category import Category
 from shared.domain.value_objects.is_geo_blocked import IsGeoBlocked
 from src.channel_app.infrastructure.persistence.models import ChannelModel, URLModel
-from src.core.id_vo import ID
+from shared.domain.id_vo import ID
 from sqlalchemy.exc import (
     IntegrityError,
     OperationalError,

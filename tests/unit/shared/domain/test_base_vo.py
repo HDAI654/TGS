@@ -1,4 +1,4 @@
-from src.core.base_vo import BaseVO
+from shared.domain.base_vo import BaseVO
 
 
 class TestBaseVO:

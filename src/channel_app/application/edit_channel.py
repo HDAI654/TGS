@@ -1,6 +1,6 @@
 import logging
 from shared.domain.ports.unit_of_work_interface import IUnitOfWork
-from src.core.id_vo import ID
+from shared.domain.id_vo import ID
 from shared.domain.value_objects.name import Name
 from shared.domain.value_objects.category import Category
 from shared.domain.value_objects.country_code import CountryCode

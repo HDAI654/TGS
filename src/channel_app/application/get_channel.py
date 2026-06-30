@@ -1,7 +1,7 @@
 import logging
 from shared.domain.ports.unit_of_work_interface import IUnitOfWork
 from shared.domain.entities.channel import ChannelEntity
-from src.core.id_vo import ID
+from shared.domain.id_vo import ID
 from src.core.exceptions import InvalidIDError, ChannelNotFoundError
 
 logger = logging.getLogger(__name__)

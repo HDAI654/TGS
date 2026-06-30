@@ -1,4 +1,4 @@
-from src.core.entity import Entity
+from shared.domain.entity import Entity
 
 
 class TestEntity:

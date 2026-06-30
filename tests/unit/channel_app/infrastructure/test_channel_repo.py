@@ -11,7 +11,7 @@ from shared.domain.value_objects.country_code import CountryCode
 from shared.domain.value_objects.name import Name
 from shared.domain.value_objects.category import Category
 from shared.domain.value_objects.is_geo_blocked import IsGeoBlocked
-from src.core.id_vo import ID
+from shared.domain.id_vo import ID
 from src.core.exceptions import (
     ChannelNotFoundError,
     ChannelDuplicateError,

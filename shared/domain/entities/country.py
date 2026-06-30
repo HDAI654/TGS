@@ -1,4 +1,4 @@
-from src.core.entity import Entity
+from shared.domain.entity import Entity
 from shared.domain.value_objects.country_code import CountryCode
 from shared.domain.value_objects.name import Name
 from shared.domain.value_objects.timezone import Timezone

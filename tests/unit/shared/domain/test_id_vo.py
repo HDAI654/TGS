@@ -1,6 +1,6 @@
 import pytest
-from src.core.id_vo import ID
-from src.core.exceptions import InvalidIDError
+from shared.domain.id_vo import ID
+from shared.domain.exceptions import InvalidIDError
 
 
 class TestID:

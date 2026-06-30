@@ -1,5 +1,5 @@
-from src.core.base_vo import BaseVO
-from src.core.exceptions import InvalidCountryCodeError
+from shared.domain.base_vo import BaseVO
+from shared.domain.exceptions import InvalidCountryCodeError
 
 
 class CountryCode(BaseVO[str]):

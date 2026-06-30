@@ -1,4 +1,4 @@
-from src.core.exceptions import InvalidHasChannelsError
+from shared.domain.exceptions import InvalidHasChannelsError
 from shared.domain.value_objects.base_bool_vo import BaseBoolVO
 
 

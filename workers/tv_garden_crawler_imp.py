@@ -11,7 +11,7 @@ from shared.domain.factories.channel_factory import ChannelFactory
 from shared.domain.factories.country_factory import CountryFactory
 from shared.domain.factories.url_factory import URLFactory
 from shared.domain.exceptions import DomainError
-from src.core.id_vo import ID
+from shared.domain.id_vo import ID
 from workers.exceptions import (
     CrawlerError,
     CrawlerConnectionError,

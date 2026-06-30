@@ -1,9 +1,4 @@
-from src.core.id_vo import ID
-
-
 class Entity:
-    id: ID
-
     def __str__(self):
         return f"{self.__class__.__name__}({', '.join(f'{key}={value}' for key, value in vars(self).items())})"
 

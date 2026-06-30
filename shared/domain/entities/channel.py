@@ -1,5 +1,5 @@
-from src.core.entity import Entity
-from src.core.id_vo import ID
+from shared.domain.entity import Entity
+from shared.domain.id_vo import ID
 from shared.domain.value_objects.name import Name
 from shared.domain.value_objects.category import Category
 from shared.domain.value_objects.language import Language

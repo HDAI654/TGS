@@ -1,6 +1,6 @@
 from shared.domain.entities.url_entity import URLEntity
-from src.core.crypto_utils import IDGenerator
-from src.core.id_vo import ID
+from shared.domain.crypto_utils import IDGenerator
+from shared.domain.id_vo import ID
 from shared.domain.value_objects.url import URL
 
 

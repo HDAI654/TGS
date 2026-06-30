@@ -1,5 +1,5 @@
-from src.core.base_vo import BaseVO
-from src.core.exceptions import InvalidNameError
+from shared.domain.base_vo import BaseVO
+from shared.domain.exceptions import InvalidNameError
 
 
 class Name(BaseVO[str]):

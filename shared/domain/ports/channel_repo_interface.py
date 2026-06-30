@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Any
 from shared.domain.entities.channel import ChannelEntity
 from shared.domain.entities.url_entity import URLEntity
-from src.core.id_vo import ID
+from shared.domain.id_vo import ID
 from shared.domain.value_objects.country_code import CountryCode
 from shared.domain.value_objects.name import Name
 from shared.domain.value_objects.category import Category
