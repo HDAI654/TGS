@@ -3,6 +3,8 @@ from src.core.exceptions import InvalidIDError
 
 
 class ID(BaseVO[str]):
+    STANDARD_ID_LENGTH = 14
+
     def __init__(self, value: str):
         if not isinstance(value, str):
             raise InvalidIDError(f"ID must be string, got {type(value).__name__}")
