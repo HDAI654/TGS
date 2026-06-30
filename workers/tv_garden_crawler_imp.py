@@ -167,11 +167,18 @@ class TVGardenCrawlerImp(ICrawler):
             youtube_urls = ch.get("youtube_urls", [])
             all_urls = list(stream_urls) + list(youtube_urls)
 
-            url_entities = [
-                URLFactory.create(url=url)
-                for url in all_urls
-                if url and isinstance(url, str)
-            ]
+            url_entities = []
+            for url in all_urls:
+                try:
+                    url_entities.append(URLFactory.create(url=url))
+                except DomainError as e:
+                    logger.warning(
+                        "Creating url-entity failed: channel_id=%s, url=%s, error=%s",
+                        channel_entity.id.value,
+                        str(url),
+                        str(e),
+                    )
+                    continue
 
             return channel_entity, url_entities
 

@@ -1,6 +1,5 @@
 from shared.domain.base_vo import BaseVO
 from shared.domain.exceptions import InvalidLanguageError
-from src.core.conf import Config
 
 
 class Language(BaseVO[str]):
@@ -12,7 +11,6 @@ class Language(BaseVO[str]):
         value = value.strip()
         if not value:
             raise InvalidLanguageError(f"Language must be a non-empty string")
-        if value not in Config.ALLOWED_LANGUAGES:
-            raise InvalidLanguageError(f"Invalid Language !")
+        value = value.lower()
 
         super().__init__(value)

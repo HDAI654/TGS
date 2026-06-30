@@ -21,6 +21,8 @@ class TestLanguage:
 
         assert language.value == str_Language.strip()
 
-    def test_invalid_Language(self):
-        with pytest.raises(InvalidLanguageError):
-            Language("uui")
+    def test_Language_lower(self):
+        str_Language = "ENG"
+        language = Language(str_Language)
+
+        assert language.value == str_Language.lower()
