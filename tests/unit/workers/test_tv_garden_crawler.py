@@ -1,19 +1,15 @@
 import pytest
 import json
 import zlib
-from unittest.mock import AsyncMock, MagicMock, patch
-from httpx import Response, ConnectError, TimeoutException
-from workers.tv_garden_crawler_imp import TVGardenCrawlerImp
-from workers.exceptions import (
+from unittest.mock import AsyncMock, patch
+from httpx import Response
+from workers.imp.tv_garden_crawler_imp import TVGardenCrawlerImp
+from workers.core.exceptions import (
     CrawlerConnectionError,
-    CrawlerTimeoutError,
     CrawlerHTTPError,
-    CrawlerParseError,
-    CrawlerEmptyResponseError,
 )
 from shared.domain.entities.country import CountryEntity
 from shared.domain.entities.channel import ChannelEntity
-from shared.domain.exceptions import DomainError
 
 
 class TestTVGardenCrawler:

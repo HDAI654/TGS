@@ -38,3 +38,31 @@ class CrawlerInvalidDataError(CrawlerError):
     """Raised when the parsed data is invalid or malformed."""
 
     pass
+
+
+####################################
+####################################
+
+
+class DatabaseError(Exception):
+    """Base exception for database errors"""
+
+    pass
+
+
+class DatabaseConnectionError(DatabaseError):
+    """Raised when cannot connect to database"""
+
+    pass
+
+
+class DatabaseTimeoutError(DatabaseError):
+    """Raised when database operation times out"""
+
+    pass
+
+
+class DatabaseOperationError(DatabaseError):
+    """Raised when database operation fails"""
+
+    pass

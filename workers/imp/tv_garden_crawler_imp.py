@@ -3,7 +3,7 @@ import httpx
 import zlib
 import json
 import random
-from workers.crawler_interface import ICrawler
+from workers.ports.crawler_interface import ICrawler
 from shared.domain.entities.channel import ChannelEntity
 from shared.domain.entities.country import CountryEntity
 from shared.domain.entities.url_entity import URLEntity
@@ -12,7 +12,7 @@ from shared.domain.factories.country_factory import CountryFactory
 from shared.domain.factories.url_factory import URLFactory
 from shared.domain.exceptions import DomainError
 from shared.domain.id_vo import ID
-from workers.exceptions import (
+from workers.core.exceptions import (
     CrawlerError,
     CrawlerConnectionError,
     CrawlerTimeoutError,

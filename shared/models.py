@@ -1,0 +1,68 @@
+from datetime import datetime, timezone
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
+from sqlalchemy.orm import declarative_base
+
+Base = declarative_base()
+
+
+class CountryModel(Base):
+    __tablename__ = "countries"
+
+    id = Column(Integer, primary_key=True, index=True)
+    country_code = Column(String(2), unique=True, nullable=False, index=True)
+    country_name = Column(String(100), nullable=False, index=True)
+    capital = Column(String(100), nullable=False, index=True)
+    timezone = Column(String(100), nullable=False, index=True)
+    has_channels = Column(Boolean, nullable=False, index=True)
+    channel_count = Column(Integer, nullable=False, index=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+
+    def __repr__(self):
+        return f"<Country(country_code='{self.country_code}', country_name='{self.country_name}')>"
+
+
+class ChannelModel(Base):
+    __tablename__ = "channels"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nano_id = Column(String(14), unique=True, nullable=False, index=True)
+    name = Column(String(100), nullable=False, index=True)
+    category = Column(String(100), nullable=False, index=True)
+    language = Column(String(3), nullable=False, index=True)
+    country_code = Column(
+        ForeignKey("countries.country_code", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    is_geo_blocked = Column(Boolean, nullable=False, index=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+
+    def __repr__(self):
+        return f"<Channel(nano_id='{self.nano_id}', name='{self.name}')>"
+
+
+class URLModel(Base):
+    __tablename__ = "urls"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nano_id = Column(String(14), unique=True, nullable=False, index=True)
+    channel_id = Column(
+        ForeignKey("channels.nano_id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    url = Column(String(2048), nullable=False, index=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
