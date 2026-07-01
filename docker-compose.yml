@@ -1,0 +1,85 @@
+services:
+  main-app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # App
+      - APP_NAME=TGS
+      - APP_ENV=production
+
+      # DB
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/tgsdb
+
+      # Cache
+      - REDIS_URL=redis://redis:6379/0
+
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./shared:/app/shared
+      - ./src:/app/src
+      - ./logs:/app/logs
+    restart: unless-stopped
+
+  celery_worker:
+    build: .
+    command: celery -A workers.celery_app worker --loglevel=info
+    environment:
+      # App
+      - APP_NAME=TaskHub
+      - APP_ENV=production
+
+      # Cache
+      - REDIS_URL=redis://redis:6379/0
+
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./shared:/app/shared
+      - ./src:/app/src
+      - ./workers:/app/workers
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "celery", "-A", "workers.celery_app", "inspect", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tgsdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:

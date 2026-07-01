@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 )
 async def update_countries(self):
     logger.info(
-        "Task: update_countries started (attempt %s/%s)", 
-        self.request.retries + 1, 
+        "Task: update_countries started (attempt %s/%s)",
+        self.request.retries + 1,
         self.max_retries + 1,
     )
     try:
@@ -30,8 +30,8 @@ async def update_countries(self):
             await uow.repo.upsert_batch_countries(countries)
             await uow.commit()
         logger.info(
-            "Task: update_countries finished successfully (attempt %s/%s)", 
-            self.request.retries + 1, 
+            "Task: update_countries finished successfully (attempt %s/%s)",
+            self.request.retries + 1,
             self.max_retries + 1,
         )
     except (DatabaseError, CrawlerError) as e:
@@ -41,7 +41,7 @@ async def update_countries(self):
             self.max_retries + 1,
         )
         self.retry(exc=e, countdown=60)
-        
+
     except Exception as e:
         logger.exception(
             "Task: update_countries unexpected error (attempt %s/%s)",
@@ -60,8 +60,8 @@ async def update_countries(self):
 )
 async def update_channels(self):
     logger.info(
-        "Task: update_channels started (attempt %s/%s)", 
-        self.request.retries + 1, 
+        "Task: update_channels started (attempt %s/%s)",
+        self.request.retries + 1,
         self.max_retries + 1,
     )
     try:
@@ -75,8 +75,8 @@ async def update_channels(self):
             await uow.repo.upsert_batch_channels(channels_and_urls)
             await uow.commit()
         logger.info(
-            "Task: update_channels finished successfully (attempt %s/%s)", 
-            self.request.retries + 1, 
+            "Task: update_channels finished successfully (attempt %s/%s)",
+            self.request.retries + 1,
             self.max_retries + 1,
         )
     except (DatabaseError, CrawlerError) as e:
@@ -86,7 +86,7 @@ async def update_channels(self):
             self.max_retries + 1,
         )
         self.retry(exc=e, countdown=60)
-        
+
     except Exception as e:
         logger.exception(
             "Task: update_channels unexpected error (attempt %s/%s)",
@@ -101,8 +101,8 @@ async def update_channels(self):
 )
 async def update_all(self):
     logger.info(
-        "Task: update_all started (attempt %s/%s)", 
-        self.request.retries + 1, 
+        "Task: update_all started (attempt %s/%s)",
+        self.request.retries + 1,
         self.max_retries + 1,
     )
     try:
@@ -120,8 +120,8 @@ async def update_all(self):
             await uow.repo.upsert_batch_channels(channels_and_urls)
             await uow.commit()
         logger.info(
-            "Task: update_all finished successfully (attempt %s/%s)", 
-            self.request.retries + 1, 
+            "Task: update_all finished successfully (attempt %s/%s)",
+            self.request.retries + 1,
             self.max_retries + 1,
         )
     except (DatabaseError, CrawlerError) as e:
@@ -131,7 +131,7 @@ async def update_all(self):
             self.max_retries + 1,
         )
         self.retry(exc=e, countdown=60)
-        
+
     except Exception as e:
         logger.exception(
             "Task: update_all unexpected error (attempt %s/%s)",
