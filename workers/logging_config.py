@@ -1,6 +1,6 @@
 import logging
 import logging.config
-from workers.conf import Config
+from workers.core.conf import Config
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
