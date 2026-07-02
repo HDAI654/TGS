@@ -188,11 +188,6 @@ class TVGardenCrawlerImp(ICrawler):
                 ch.get("nanoid", "unknown"),
                 str(e),
             )
-            print(ch)
-            print("*" * 10)
-            print("*" * 10)
-            print("*" * 10)
-            print("*" * 10)
             return None
 
     # ========== MAIN METHODS ==========
@@ -225,14 +220,17 @@ class TVGardenCrawlerImp(ICrawler):
             logger.error("Extracting countries data failed")
             raise
 
-    async def extract_all_channels(self) -> dict[str, dict]:
+    async def extract_all_channels(
+        self,
+    ) -> tuple[list[ChannelEntity], dict[ID, list[URLEntity]]]:
         """Extract all channels from the API."""
         logger.info(
             "Extracting channels data from %d categories",
             len(self.AVAILABLE_CATEGORIES),
         )
 
-        channels_data = {}
+        channels_data = []
+        urls_data = {}
         failed_categories = []
         total_channels = 0
 
@@ -254,10 +252,8 @@ class TVGardenCrawlerImp(ICrawler):
                     result = self._create_channel_entity(ch, category_name)
                     if result:
                         channel_entity, url_entities = result
-                        channels_data[channel_entity.id.value] = {
-                            "channel": channel_entity,
-                            "urls": url_entities,
-                        }
+                        channels_data.append(channel_entity)
+                        urls_data[channel_entity.id] = url_entities
                         count += 1
 
                 total_channels += count
@@ -283,4 +279,4 @@ class TVGardenCrawlerImp(ICrawler):
         if failed_categories:
             logger.warning("Failed categories: %s", failed_categories)
 
-        return channels_data
+        return list(set(channels_data)), urls_data

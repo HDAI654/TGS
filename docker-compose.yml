@@ -37,8 +37,11 @@ services:
     command: celery -A workers.celery_app worker --loglevel=info
     environment:
       # App
-      - APP_NAME=TaskHub
+      - APP_NAME=TGS
       - APP_ENV=production
+
+      # DB
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/tgsdb
 
       # Cache
       - REDIS_URL=redis://redis:6379/0

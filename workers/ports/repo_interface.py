@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from shared.domain.id_vo import ID
 from shared.domain.entities.channel import ChannelEntity
 from shared.domain.entities.country import CountryEntity
 from shared.domain.entities.url_entity import URLEntity
@@ -18,6 +19,6 @@ class IRepo(ABC):
         pass
 
     @abstractmethod
-    async def upsert_batch_urls(self, urls: list[URLEntity]) -> None:
+    async def upsert_batch_urls(self, urls: list[tuple[ID, URLEntity]]) -> None:
         """Add new URLs and update changed URLs"""
         pass

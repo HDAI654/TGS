@@ -80,12 +80,12 @@ class SQLAL_Repo(IRepo):
         # Convert entities to dict
         values = [
             {
-                "country_code": c.id.value,
-                "country_name": c.name.value,
-                "capital": c.category.value,
-                "timezone": c.language.value,
-                "has_channels": c.country_code.value,
-                "channel_count": c.is_geo_blocked.value,
+                "country_code": c.country_code.value,
+                "country_name": c.country_name.value,
+                "capital": c.capital.value,
+                "timezone": c.timezone.value,
+                "has_channels": c.has_channels.value,
+                "channel_count": c.channel_count.value,
             }
             for c in countries
         ]
