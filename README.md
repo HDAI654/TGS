@@ -193,7 +193,7 @@ curl -X POST "http://0.0.0.0:8000/graphql/v1" \
 curl -X POST "http://0.0.0.0:8000/api/v1/admin/sync/all"
 ```
 
-> Full cURL examples are available in the [GitHub wiki](https://github.com/HDAI654/TGS/wiki/API-Examples).
+> Full cURL examples are available in the [GitHub wiki](https://github.com/HDAI654/TGS/wiki/API%E2%80%90Examples).
 
 ---
 
