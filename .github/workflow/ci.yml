@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  formatting:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -11,8 +11,9 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install
-        run: pip install black
-      
+      - name: Install dependencies
+        run: |
+          pip install black
+
       - name: Check formatting
         run: black --check .
