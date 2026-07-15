@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from src.logging_config import setup_logging
 from contextlib import asynccontextmanager
 from src.modules.core.database import engine
@@ -27,6 +28,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     lifespan=lifespan,
+)
+
+# !! Only for test !!
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 logging.info("%s started successfully", Config.APP_NAME)
