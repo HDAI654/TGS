@@ -1,6 +1,8 @@
 import logging
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Depends
+from src.modules.channels.domain.ports.task_interface import ITask
 from src.modules.channels.application.sync_channels_data import SyncChannelsService
+from src.modules.channels.presentation.api.v1.dependencies import get_sync_channels_task
 from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
@@ -17,10 +19,11 @@ class SyncChannelsResponse(BaseModel):
 @router.post("/sync/channels")
 async def sync_channels(
     request: Request,
+    task: ITask = Depends(get_sync_channels_task),
 ):
     logger.info("SyncChannels endpoint started")
     try:
-        service = SyncChannelsService()
+        service = SyncChannelsService(task)
         result = await service.execute()
     except Exception as e:
         logger.exception("Unexpected error during SyncChannels endpoint")

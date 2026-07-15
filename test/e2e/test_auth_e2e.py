@@ -1,4 +1,4 @@
-'''import pytest
+import pytest
 import logging
 from httpx import AsyncClient, ASGITransport
 from src.main import app
@@ -244,4 +244,3 @@ class TestAuthE2E:
             json={"email": email, "password": new_reset_password},
         )
         assert response.status_code == 401
-'''

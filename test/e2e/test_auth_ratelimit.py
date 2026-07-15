@@ -1,4 +1,4 @@
-'''import pytest
+import pytest
 import fakeredis
 from unittest.mock import patch
 from httpx import AsyncClient, ASGITransport
@@ -310,4 +310,3 @@ class TestAuthRateLimit:
         )
         assert response.status_code == 429
         assert "Rate limit exceeded" in response.json()["detail"]
-'''

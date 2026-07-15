@@ -1,6 +1,8 @@
 import logging
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Depends
+from src.modules.channels.domain.ports.task_interface import ITask
 from src.modules.channels.application.sync_all_data import SyncAllDataService
+from src.modules.channels.presentation.api.v1.dependencies import get_sync_all_data_task
 from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
@@ -17,10 +19,11 @@ class SyncAllResponse(BaseModel):
 @router.post("/sync/all")
 async def sync_all(
     request: Request,
+    task: ITask = Depends(get_sync_all_data_task),
 ):
     logger.info("SyncAll endpoint started")
     try:
-        service = SyncAllDataService()
+        service = SyncAllDataService(task)
         result = await service.execute()
     except Exception as e:
         logger.exception("Unexpected error during SyncAll endpoint")
