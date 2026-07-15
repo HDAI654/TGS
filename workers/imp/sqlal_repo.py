@@ -2,7 +2,11 @@ import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import insert
-from src.modules.channels.infrastructure.persistence.models import ChannelModel, CountryModel, URLModel
+from src.modules.channels.infrastructure.persistence.models import (
+    ChannelModel,
+    CountryModel,
+    URLModel,
+)
 from workers.ports.repo_interface import IRepo
 from src.modules.channels.domain.value_objects.id import ID
 from src.modules.channels.domain.entities.channel import ChannelEntity
