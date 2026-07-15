@@ -6,7 +6,7 @@ services:
     environment:
       # App
       - APP_NAME=TGS
-      - APP_ENV=development
+      - APP_ENV=production
 
       # Email
       - SUPPORT_EMAIL=support@wtv.com
@@ -44,9 +44,9 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - ./shared:/app/shared
       - ./src:/app/src
       - ./logs:/app/logs
+      - ./keys:/app/keys:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/"]
@@ -76,10 +76,10 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - ./shared:/app/shared
       - ./src:/app/src
       - ./workers:/app/workers
       - ./logs:/app/logs
+      - ./keys:/app/keys:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "celery", "-A", "workers.celery_app", "inspect", "ping"]
