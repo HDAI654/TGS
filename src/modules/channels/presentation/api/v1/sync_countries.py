@@ -2,7 +2,9 @@ import logging
 from fastapi import APIRouter, HTTPException, Request, Depends
 from src.modules.channels.domain.ports.task_interface import ITask
 from src.modules.channels.application.sync_countries_data import SyncCountriesService
-from src.modules.channels.presentation.api.v1.dependencies import get_sync_countries_task
+from src.modules.channels.presentation.api.v1.dependencies import (
+    get_sync_countries_task,
+)
 from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
