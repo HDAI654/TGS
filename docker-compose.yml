@@ -5,7 +5,7 @@ services:
       - "8000:8000"
     environment:
       # App
-      - APP_NAME=WTV
+      - APP_NAME=TGS
       - APP_ENV=development
 
       # Email
@@ -18,12 +18,12 @@ services:
       - RESET_PASSWORD_EXPIRE_MINUTES=60
 
       # DB
-      - DATABASE_URL=sqlite+aiosqlite:///:memory:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/tgsdb
 
       # Cache
-      - REDIS_URL=redis://localhost:6379
-      - SESSION_KEY_PREFIX=session:
-      - USER_SESSIONS_KEY_PREFIX=user_sessions:
+      - REDIS_URL=redis://redis:6379/0
+      - SESSION_KEY_PREFIX="session:"
+      - USER_SESSIONS_KEY_PREFIX="user_sessions:"
 
       # Auth Token
       - AUTH_TOKEN_ALGORITHM=RS256
