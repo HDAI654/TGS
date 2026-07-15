@@ -2,7 +2,6 @@ import logging
 import httpx
 import zlib
 import json
-import random
 from workers.ports.crawler_interface import ICrawler
 from src.modules.channels.domain.value_objects.id import ID
 from src.modules.channels.domain.entities.channel import ChannelEntity
@@ -138,20 +137,12 @@ class TVGardenCrawlerImp(ICrawler):
     ) -> tuple[ChannelEntity, list[URLEntity]] | None:
         """Create a ChannelEntity and its URLs from raw data."""
         try:
-            # Handle short IDs
-            id = str(ch.get("nanoid"))
-            chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-            if id and len(id) < ID.STANDARD_ID_LENGTH:
-                id = id + "".join(
-                    random.choices(chars, k=ID.STANDARD_ID_LENGTH - len(id))
-                )
-
             # Get language (handle missing or empty)
             languages = ch.get("languages", [])
             language = languages[0] if languages else "ukn"  # ukn = unknown
 
             channel_entity = ChannelEntity.create(
-                id=id,
+                id=ID.generate().value,
                 name=str(ch.get("name")),
                 category=category_name,
                 language=str(language),

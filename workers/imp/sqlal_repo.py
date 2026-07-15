@@ -38,7 +38,7 @@ class SQLAL_Repo(IRepo):
         # Convert entities to dict
         values = [
             {
-                "nano_id": c.id.value,
+                "public_id": c.id.value,
                 "name": c.name.value,
                 "category": c.category.value,
                 "language": c.language.value,
@@ -51,9 +51,9 @@ class SQLAL_Repo(IRepo):
         # Build upsert statement
         stmt = insert(ChannelModel).values(values)
         stmt = stmt.on_conflict_do_update(
-            index_elements=["nano_id"],
+            index_elements=["name"],
             set_={
-                "name": stmt.excluded.name,
+                "public_id": stmt.excluded.public_id,
                 "category": stmt.excluded.category,
                 "language": stmt.excluded.language,
                 "country_code": stmt.excluded.country_code,
@@ -122,7 +122,7 @@ class SQLAL_Repo(IRepo):
         # Convert entities to dict
         values = [
             {
-                "nano_id": url_entity.id.value,
+                "public_id": url_entity.id.value,
                 "channel_id": channel_id.value,
                 "url": url_entity.url.value,
             }
