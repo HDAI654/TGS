@@ -1,0 +1,123 @@
+services:
+  main-app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # App
+      - APP_NAME=WTV
+      - APP_ENV=development
+
+      # Email
+      - SUPPORT_EMAIL=support@wtv.com
+
+      # Links
+      - VERIFY_EMAIL_URL=http://localhost:8000/verifyemail
+      - RESET_PASSWORD_URL=http://localhost:8000/reset-password
+      - VERIFY_EMAIL_EXPIRE_MINUTES=1440
+      - RESET_PASSWORD_EXPIRE_MINUTES=60
+
+      # DB
+      - DATABASE_URL=sqlite+aiosqlite:///:memory:
+
+      # Cache
+      - REDIS_URL=redis://localhost:6379
+      - SESSION_KEY_PREFIX=session:
+      - USER_SESSIONS_KEY_PREFIX=user_sessions:
+
+      # Auth Token
+      - AUTH_TOKEN_ALGORITHM=RS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=15
+      - REFRESH_TOKEN_EXPIRE_MINUTES=43200
+      - ROTATE_THRESHOLD_MINUTES=4320
+
+      # Email
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=465
+      - SMTP_USER=your-email@gmail.com
+      - SMTP_PASSWORD=xxxx xxxx xxxx xxxx
+      - FROM_EMAIL=your-email@gmail.com
+
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./shared:/app/shared
+      - ./src:/app/src
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  celery_worker:
+    build: .
+    user: "1000:1000" 
+    command: celery -A workers.celery_app worker --loglevel=info
+    environment:
+      # App
+      - APP_NAME=TGS
+      - APP_ENV=production
+
+      # DB
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/tgsdb
+
+      # Cache
+      - REDIS_URL=redis://redis:6379/0
+
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./shared:/app/shared
+      - ./src:/app/src
+      - ./workers:/app/workers
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "celery", "-A", "workers.celery_app", "inspect", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tgsdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
