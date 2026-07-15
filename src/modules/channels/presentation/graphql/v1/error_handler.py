@@ -2,8 +2,8 @@ from typing import Callable
 from functools import wraps
 import logging
 from strawberry.exceptions import StrawberryGraphQLError
-from src.channel_app.presentation.graphql.v1.error_code import ErrorCodes
-from src.core.exceptions import DomainError, DatabaseError
+from src.modules.channels.presentation.graphql.v1.error_code import ErrorCodes
+from src.modules.channels.exceptions import DomainError, DatabaseError
 
 
 def error_handler(

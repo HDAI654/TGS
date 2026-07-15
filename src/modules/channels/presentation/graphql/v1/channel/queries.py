@@ -1,14 +1,17 @@
 import strawberry
 import logging
 from strawberry.scalars import JSON
-from src.channel_app.presentation.graphql.v1.channel.types import ChannelType, URLType
-from shared.domain.ports.unit_of_work_interface import IUnitOfWork
-from src.channel_app.application.get_channel import GetChannelService
-from src.channel_app.application.search_channel import SearchChannelService
-from src.channel_app.application.get_channel_urls import GetChannelURLsService
-from src.channel_app.presentation.graphql.v1.error_handler import error_handler
-from src.core.exceptions import ChannelNotFoundError, InvalidFieldError
-from src.channel_app.presentation.graphql.v1.error_code import ErrorCodes
+from src.modules.channels.presentation.graphql.v1.channel.types import (
+    ChannelType,
+    URLType,
+)
+from src.modules.channels.domain.ports.unit_of_work_interface import IUnitOfWork
+from src.modules.channels.application.get_channel import GetChannelService
+from src.modules.channels.application.search_channel import SearchChannelService
+from src.modules.channels.application.get_channel_urls import GetChannelURLsService
+from src.modules.channels.presentation.graphql.v1.error_handler import error_handler
+from src.modules.channels.exceptions import ChannelNotFoundError, InvalidFieldError
+from src.modules.channels.presentation.graphql.v1.error_code import ErrorCodes
 
 logger = logging.getLogger(__name__)
 

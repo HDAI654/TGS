@@ -1,13 +1,13 @@
 import strawberry
 import logging
 from strawberry.scalars import JSON
-from src.channel_app.presentation.graphql.v1.country.types import CountryType
-from shared.domain.ports.unit_of_work_interface import IUnitOfWork
-from src.channel_app.application.get_country import GetCountryService
-from src.channel_app.application.search_country import SearchCountryService
-from src.channel_app.presentation.graphql.v1.error_handler import error_handler
-from src.core.exceptions import CountryNotFoundError, InvalidFieldError
-from src.channel_app.presentation.graphql.v1.error_code import ErrorCodes
+from src.modules.channels.presentation.graphql.v1.country.types import CountryType
+from src.modules.channels.domain.ports.unit_of_work_interface import IUnitOfWork
+from src.modules.channels.application.get_country import GetCountryService
+from src.modules.channels.application.search_country import SearchCountryService
+from src.modules.channels.presentation.graphql.v1.error_handler import error_handler
+from src.modules.channels.exceptions import CountryNotFoundError, InvalidFieldError
+from src.modules.channels.presentation.graphql.v1.error_code import ErrorCodes
 
 logger = logging.getLogger(__name__)
 

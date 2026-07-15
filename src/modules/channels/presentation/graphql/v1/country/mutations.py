@@ -1,17 +1,17 @@
 import strawberry
 import logging
-from src.channel_app.presentation.graphql.v1.country.types import CountryType
-from shared.domain.ports.unit_of_work_interface import IUnitOfWork
-from src.channel_app.application.create_country import CreateCountryService
-from src.channel_app.application.edit_country import EditCountryService
-from src.channel_app.application.delete_country import DeleteCountryService
-from src.channel_app.presentation.graphql.v1.error_handler import error_handler
-from src.core.exceptions import (
+from src.modules.channels.presentation.graphql.v1.country.types import CountryType
+from src.modules.channels.domain.ports.unit_of_work_interface import IUnitOfWork
+from src.modules.channels.application.create_country import CreateCountryService
+from src.modules.channels.application.edit_country import EditCountryService
+from src.modules.channels.application.delete_country import DeleteCountryService
+from src.modules.channels.presentation.graphql.v1.error_handler import error_handler
+from src.modules.channels.exceptions import (
     CountryNotFoundError,
     CountryDuplicateError,
     NoChangesError,
 )
-from src.channel_app.presentation.graphql.v1.error_code import ErrorCodes
+from src.modules.channels.presentation.graphql.v1.error_code import ErrorCodes
 
 logger = logging.getLogger(__name__)
 

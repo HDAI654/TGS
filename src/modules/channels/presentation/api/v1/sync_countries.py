@@ -1,6 +1,6 @@
 import logging
 from fastapi import APIRouter, HTTPException, Request
-from src.channel_app.application.sync_countries_data import SyncCountriesService
+from src.modules.channels.application.sync_countries_data import SyncCountriesService
 from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)

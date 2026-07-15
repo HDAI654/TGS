@@ -1,11 +1,11 @@
 from fastapi import APIRouter
-from src.channel_app.presentation.api.v1.sync_all import (
+from src.modules.channels.presentation.api.v1.sync_all import (
     router as sync_all_router,
 )
-from src.channel_app.presentation.api.v1.sync_channels import (
+from src.modules.channels.presentation.api.v1.sync_channels import (
     router as sync_channels_router,
 )
-from src.channel_app.presentation.api.v1.sync_countries import (
+from src.modules.channels.presentation.api.v1.sync_countries import (
     router as sync_countries_router,
 )
 
