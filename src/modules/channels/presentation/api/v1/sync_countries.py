@@ -6,6 +6,7 @@ from src.modules.channels.presentation.api.v1.dependencies import (
     get_sync_countries_task,
 )
 from pydantic import BaseModel
+from src.modules.channels.presentation.auth_checker import auth_check
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +20,7 @@ class SyncCountriesResponse(BaseModel):
 
 
 @router.post("/sync/countries")
+@auth_check(admin_check=True)
 async def sync_countries(
     request: Request,
     task: ITask = Depends(get_sync_countries_task),
