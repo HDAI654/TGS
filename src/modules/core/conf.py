@@ -67,3 +67,6 @@ class Config:
     SMTP_USER: str = os.getenv("SMTP_USER", "your-email@gmail.com")
     SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "xxxx xxxx xxxx xxxx")
     FROM_EMAIL: str = os.getenv("FROM_EMAIL", "your-email@gmail.com")
+
+    # Admin
+    ADMIN_HASHED_PASSWORD: str = os.getenv("ADMIN_HASHED_PASSWORD", None)
