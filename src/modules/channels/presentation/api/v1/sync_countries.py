@@ -6,7 +6,7 @@ from src.modules.channels.presentation.api.v1.dependencies import (
     get_sync_countries_task,
 )
 from pydantic import BaseModel
-from src.modules.channels.presentation.auth_checker import auth_check
+from src.modules.channels.presentation.api.v1.auth_checker import auth_check
 
 logger = logging.getLogger(__name__)
 

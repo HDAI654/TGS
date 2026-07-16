@@ -16,6 +16,7 @@ async def test_admin_login_success(
         email="test@example.com",
         password="StrongP@ssw0rd",
         current_device="chrome-windows",
+        admin_password="efiEKNMEDKehfe4128520efwiuf#$#$&jfecw5ef",
     )
 
     mock_uow.users.get_by_email.assert_called_once_with(email=Email("test@example.com"))
@@ -40,6 +41,7 @@ async def test_admin_login_invalid_password(
             email="test@example.com",
             password="wrong",
             current_device="chrome-windows",
+            admin_password="efijEKNMEDKe4128520efwiuf#$#$&wujfecw5ef",
         )
 
 
@@ -49,4 +51,5 @@ async def test_admin_login_weak_password(admin_login_service, mock_uow):
             email="test@example.com",
             password="weak",
             current_device="chrome-windows",
+            admin_password="efiwEKNMEDKehfe4128520efwiuf#$#$&fecw5ef",
         )

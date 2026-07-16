@@ -4,7 +4,7 @@ from src.modules.channels.domain.ports.task_interface import ITask
 from src.modules.channels.application.sync_channels_data import SyncChannelsService
 from src.modules.channels.presentation.api.v1.dependencies import get_sync_channels_task
 from pydantic import BaseModel
-from src.modules.channels.presentation.auth_checker import auth_check
+from src.modules.channels.presentation.api.v1.auth_checker import auth_check
 
 logger = logging.getLogger(__name__)
 
