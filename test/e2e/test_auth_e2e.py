@@ -114,6 +114,22 @@ class TestAuthE2E:
         assert "device_id" in data
         device = data["device_id"]
 
+        ## admin login
+        response = await client.post(
+            "/auth/admin-login",
+            json={
+                "email": email,
+                "password": password,
+                "admin_password": "aIFf|fb3,h|s%VjdBB%o[O",
+            },
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert "access_token" in data
+        assert "refresh_token" in data
+        assert "device_id" in data
+        device = data["device_id"]
+
         # 4. Change password
         response = await client.put(
             "/auth/password",

@@ -9,7 +9,7 @@ class ITokenEncoder(ABC):
 
     @abstractmethod
     def create_access_token(
-        self, user_id: UserID, session_id: SessionID, device: Device
+        self, user_id: UserID, session_id: SessionID, device: Device, role: str = None
     ) -> str:
         """
         Create a short-lived access token for authentication.

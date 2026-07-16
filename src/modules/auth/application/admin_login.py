@@ -62,7 +62,7 @@ class AdminLoginService:
 
         # Generate access and refresh tokens
         access_token = self.token_encoder.create_access_token(
-            user.id, session.id, session.device
+            user.id, session.id, session.device, "admin"
         )
         refresh_token = self.token_encoder.create_refresh_token(
             user.id, session.id, session.device

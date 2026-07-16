@@ -5,6 +5,7 @@ from src.modules.auth.application.del_account import DelAccountService
 from src.modules.auth.application.forget_pass_verify import (
     ForgetPasswordVerificationService,
 )
+from src.modules.auth.application.admin_login import AdminLoginService
 from src.modules.auth.application.login import LoginService
 from src.modules.auth.application.logout import LogoutService
 from src.modules.auth.application.reset_password import ResetPasswordService
@@ -164,6 +165,21 @@ def login_service(
     mock_password_hasher,
 ):
     return LoginService(
+        uow=mock_uow,
+        session_repo=mock_session_repo,
+        token_encoder=mock_token_encoder,
+        password_hasher=mock_password_hasher,
+    )
+
+
+@pytest.fixture
+def admin_login_service(
+    mock_uow,
+    mock_session_repo,
+    mock_token_encoder,
+    mock_password_hasher,
+):
+    return AdminLoginService(
         uow=mock_uow,
         session_repo=mock_session_repo,
         token_encoder=mock_token_encoder,
