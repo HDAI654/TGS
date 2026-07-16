@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from src.modules.auth.presentation.api.v1 import (
     signup,
+    admin_login,
     login,
     logout,
     send_verification,
@@ -17,6 +18,7 @@ from src.modules.auth.presentation.api.v1 import (
 router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 
 router.include_router(signup.router)
+router.include_router(admin_login.router)
 router.include_router(login.router)
 router.include_router(logout.router)
 router.include_router(send_verification.router)

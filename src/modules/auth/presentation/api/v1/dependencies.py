@@ -42,6 +42,7 @@ from src.modules.auth.application.del_account import DelAccountService
 from src.modules.auth.application.forget_pass_verify import (
     ForgetPasswordVerificationService,
 )
+from src.modules.auth.application.admin_login import AdminLoginService
 from src.modules.auth.application.login import LoginService
 from src.modules.auth.application.logout import LogoutService
 from src.modules.auth.application.revoke import RevokeService
@@ -122,6 +123,15 @@ async def get_forget_pass_service(
     email_sender: IEmailSender = Depends(get_email_sender),
 ) -> ForgetPasswordVerificationService:
     return ForgetPasswordVerificationService(uow, token_repo, email_sender)
+
+
+async def get_admin_login_service(
+    uow: IUnitOfWork = Depends(get_uow),
+    session_repo: ISessionRepository = Depends(get_session_repo),
+    token_encoder: ITokenEncoder = Depends(get_token_encoder),
+    password_hasher: IPasswordHasher = Depends(get_password_hasher),
+) -> AdminLoginService:
+    return AdminLoginService(uow, session_repo, token_encoder, password_hasher)
 
 
 async def get_login_service(
