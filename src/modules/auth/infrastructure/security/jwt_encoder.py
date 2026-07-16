@@ -23,7 +23,7 @@ class JWT_TokenEncoder(ITokenEncoder):
         self.algorithm = Config.AUTH_TOKEN_ALGORITHM
 
     def create_access_token(
-        self, user_id: UserID, session_id: SessionID, device: Device
+        self, user_id: UserID, session_id: SessionID, device: Device, role: str = None
     ) -> str:
         try:
             exp = datetime.now(timezone.utc) + timedelta(
@@ -37,6 +37,8 @@ class JWT_TokenEncoder(ITokenEncoder):
                 "type": "access",
                 "iat": datetime.now(timezone.utc).timestamp(),
             }
+            if role is not None and isinstance(role, str) and len(role.strip()) > 0:
+                payload["role"] = role
             return jwt.encode(payload, self.private_key, algorithm=self.algorithm)
         except Exception as e:
             raise AuthTokenCreationError(
