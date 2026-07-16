@@ -1,3 +1,4 @@
+# TODO: Add auth-check to these endpoints
 import strawberry
 import logging
 from typing import Optional
