@@ -29,6 +29,18 @@ class InvalidCountryCodeError(DomainError):
 
     pass
 
+class InvalidCountError(DomainError):
+    """Raised when a Count value is invalid or malformed."""
+
+    pass
+
+
+class InvalidHasChannelsError(DomainError):
+    """Raised when a HasChannel value is invalid or malformed."""
+
+    pass
+
+
 # ===== Entity Exceptions =====
 class ChannelException(DomainError):
     """Base Channel error"""
