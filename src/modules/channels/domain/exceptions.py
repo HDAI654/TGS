@@ -45,6 +45,10 @@ class InvalidURLError(DomainError):
 
     pass
 
+class InvalidTimezoneError(DomainError):
+    """Raised when a Timezone value is invalid or malformed."""
+
+    pass
 
 # ===== Entity Exceptions =====
 class ChannelException(DomainError):
