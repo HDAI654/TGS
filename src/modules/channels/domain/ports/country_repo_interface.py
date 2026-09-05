@@ -29,7 +29,7 @@ class CountryRepository(ABC):
         pass
 
     @abstractmethod
-    async def search(self, text, limit, offset) -> tuple[Country, ...]:
+    async def search(self, text: str, limit: int, offset: int) -> tuple[Country, ...]:
         """Search countries.
 
         Raises:

@@ -17,7 +17,7 @@ class ChannelRepository(ABC):
         pass
 
     @abstractmethod
-    async def search(self, text, limit, offset) -> tuple[Channel, ...]:
+    async def search(self, text: str, limit: int, offset: int) -> tuple[Channel, ...]:
         """Search channels.
 
         Raises:
