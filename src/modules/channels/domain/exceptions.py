@@ -40,6 +40,11 @@ class InvalidHasChannelsError(DomainError):
 
     pass
 
+class InvalidURLError(DomainError):
+    """Raised when a URL value is invalid or malformed."""
+
+    pass
+
 
 # ===== Entity Exceptions =====
 class ChannelException(DomainError):
