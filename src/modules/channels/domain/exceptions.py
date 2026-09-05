@@ -18,3 +18,8 @@ class InvalidCategoryNameError(DomainError):
     """Raised when a CategoryName value is invalid or malformed."""
 
     pass
+
+class InvalidLanguageError(DomainError):
+    """Raised when a Language value is invalid or malformed."""
+
+    pass
