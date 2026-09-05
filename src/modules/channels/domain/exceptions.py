@@ -28,3 +28,15 @@ class InvalidCountryCodeError(DomainError):
     """Raised when a Country code value is invalid or malformed."""
 
     pass
+
+# ===== Entity Exceptions =====
+class ChannelException(DomainError):
+    """Base Channel error"""
+
+    pass
+
+
+class ChannelNotFoundError(ChannelException):
+    """Raised when Channel not found"""
+
+    pass
