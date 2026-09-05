@@ -8,7 +8,7 @@ class SearchCountry:
     ):
         self.repo = country_repo
 
-    def execute(self, text: str, limit: int = 10, offset: int = 0):
-        country = self.repo.search(text, limit, offset)
+    async def execute(self, text: str, limit: int = 10, offset: int = 0):
+        country = await self.repo.search(text, limit, offset)
 
         return country

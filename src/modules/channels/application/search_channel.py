@@ -8,7 +8,7 @@ class SearchChannel:
     ):
         self.repo = channel_repo
 
-    def execute(self, text: str, limit: int = 10, offset: int = 0):
-        channel = self.repo.search(text, limit, offset)
+    async def execute(self, text: str, limit: int = 10, offset: int = 0):
+        channel = await self.repo.search(text, limit, offset)
 
         return channel

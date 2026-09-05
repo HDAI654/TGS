@@ -8,7 +8,7 @@ class GetChannel:
     ):
         self.repo = channel_repo
 
-    def execute(self, channel_id: str):
-        channel = self.repo.get_by_id(channel_id)
+    async def execute(self, channel_id: str):
+        channel = await self.repo.get_by_id(channel_id)
 
         return channel

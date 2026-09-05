@@ -8,7 +8,7 @@ class GetCountry:
     ):
         self.repo = country_repo
 
-    def execute(self, country_code: str):
-        country = self.repo.get_by_code(country_code)
+    async def execute(self, country_code: str):
+        country = await self.repo.get_by_code(country_code)
 
         return country
