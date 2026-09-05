@@ -1,13 +1,14 @@
 from dataclasses import dataclass
 
+
 @dataclass(slots=True, frozen=True)
-class Channel:
+class Country:
     country_code: str
     country_name: str
     timezone: str
     has_channels: bool
     channel_count: int
-    
+
     def to_dict(self) -> dict:
         return {
             "country_code": self.country_code,

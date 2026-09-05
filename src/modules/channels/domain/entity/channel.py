@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass(slots=True, frozen=True)
 class Channel:
     id: str
@@ -8,7 +9,7 @@ class Channel:
     language: str
     country_code: str
     urls: tuple[str, ...]
-    
+
     def to_dict(self) -> dict:
         return {
             "id": self.id,

@@ -3,6 +3,7 @@ class DomainError(Exception):
 
     pass
 
+
 # ===== Entity Exceptions =====
 class ChannelException(DomainError):
     """Base Channel error"""
@@ -15,6 +16,7 @@ class ChannelNotFoundError(ChannelException):
 
     pass
 
+
 class CountryException(DomainError):
     """Base Country error"""
 
@@ -25,4 +27,3 @@ class CountryNotFoundError(CountryException):
     """Country not found"""
 
     pass
-
