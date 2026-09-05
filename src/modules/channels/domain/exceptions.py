@@ -23,3 +23,8 @@ class InvalidLanguageError(DomainError):
     """Raised when a Language value is invalid or malformed."""
 
     pass
+
+class InvalidCountryCodeError(DomainError):
+    """Raised when a Country code value is invalid or malformed."""
+
+    pass
