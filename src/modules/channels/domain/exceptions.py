@@ -13,3 +13,8 @@ class InvalidNameError(DomainError):
     """Raised when a Name value is invalid or malformed."""
 
     pass
+
+class InvalidCategoryNameError(DomainError):
+    """Raised when a CategoryName value is invalid or malformed."""
+
+    pass
