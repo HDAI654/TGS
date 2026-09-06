@@ -2,7 +2,9 @@ from channels_service.domain.entities.country import Country
 from channels_service.domain.ports.country_repository import CountryRepository
 
 
-async def get_country(repository: CountryRepository, country_code: str) -> Country | None:
+async def get_country(
+    repository: CountryRepository, country_code: str
+) -> Country | None:
     return await repository.get_by_id(country_code)
 
 

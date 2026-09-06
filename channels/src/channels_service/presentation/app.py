@@ -6,7 +6,10 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from strawberry.fastapi import GraphQLRouter
 from channels_service.config import APP_NAME, CORS_ALLOWED_ORIGINS
 from channels_service.infrastructure.persistence.database import engine, session_factory
-from channels_service.infrastructure.persistence.repositories import SQLAlchemyChannelRepository, SQLAlchemyCountryRepository
+from channels_service.infrastructure.persistence.repositories import (
+    SQLAlchemyChannelRepository,
+    SQLAlchemyCountryRepository,
+)
 from channels_service.presentation.graphql.schema import schema
 
 

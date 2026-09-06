@@ -8,7 +8,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Country",
             fields=[
-                ("country_code", models.CharField(max_length=2, primary_key=True, serialize=False)),
+                (
+                    "country_code",
+                    models.CharField(max_length=2, primary_key=True, serialize=False),
+                ),
                 ("country_name", models.CharField(max_length=100)),
                 ("timezone", models.CharField(max_length=100)),
                 ("has_channels", models.BooleanField(default=False)),

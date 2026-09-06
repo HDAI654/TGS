@@ -152,9 +152,7 @@ class SQLAlchemyCountryRepository(CountryRepository):
         )
         total = int(count_result.scalar_one())
         result = await self._session.execute(
-            base.order_by(CountryModel.country_code)
-            .offset(offset)
-            .limit(limit)
+            base.order_by(CountryModel.country_code).offset(offset).limit(limit)
         )
         return [_country(row) for row in result.scalars().all()], total
 

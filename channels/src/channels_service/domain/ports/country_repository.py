@@ -12,7 +12,9 @@ class CountryRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def search(self, text: str, limit: int, offset: int) -> tuple[list[Country], int]:
+    async def search(
+        self, text: str, limit: int, offset: int
+    ) -> tuple[list[Country], int]:
         raise NotImplementedError
 
     @abstractmethod

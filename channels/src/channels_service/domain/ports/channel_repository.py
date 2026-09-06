@@ -13,7 +13,9 @@ class ChannelRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def search(self, text: str, limit: int, offset: int) -> tuple[list[Channel], int]:
+    async def search(
+        self, text: str, limit: int, offset: int
+    ) -> tuple[list[Channel], int]:
         raise NotImplementedError
 
     @abstractmethod

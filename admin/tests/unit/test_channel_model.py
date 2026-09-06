@@ -16,11 +16,17 @@ def test_channel_generates_uuid_and_preserves_uniqueness():
         country_code="US", country_name="United States", timezone="America/New_York"
     )
     first = Channel.objects.create(
-        name="A", category=category, language="en", country=country,
+        name="A",
+        category=category,
+        language="en",
+        country=country,
         urls={"urls": ["https://example.com"]},
     )
     second = Channel.objects.create(
-        name="B", category=category, language="en", country=country,
+        name="B",
+        category=category,
+        language="en",
+        country=country,
         urls={"urls": ["https://example.org"]},
     )
     assert isinstance(first.id, uuid.UUID)
@@ -39,6 +45,9 @@ def test_channel_rejects_non_url_items():
     )
     with pytest.raises(ValidationError):
         Channel.objects.create(
-            name="A", category=category, language="en", country=country,
+            name="A",
+            category=category,
+            language="en",
+            country=country,
             urls={"urls": ["not-a-url"]},
         )

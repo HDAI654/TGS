@@ -13,7 +13,9 @@ def default_urls() -> dict[str, list[str]]:
 class Channel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="channels")
+    category = models.ForeignKey(
+        Category, on_delete=models.PROTECT, related_name="channels"
+    )
     language = models.CharField(max_length=50)
     country = models.ForeignKey(
         Country,
@@ -30,8 +32,12 @@ class Channel(models.Model):
 
     def clean(self) -> None:
         super().clean()
-        if not isinstance(self.urls, dict) or not isinstance(self.urls.get("urls"), list):
-            raise ValidationError({"urls": "Expected an object containing a urls list."})
+        if not isinstance(self.urls, dict) or not isinstance(
+            self.urls.get("urls"), list
+        ):
+            raise ValidationError(
+                {"urls": "Expected an object containing a urls list."}
+            )
         validator = URLValidator()
         errors = []
         for value in self.urls["urls"]:

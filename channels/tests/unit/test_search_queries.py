@@ -30,7 +30,6 @@ async def test_country_search_delegates_non_empty_text():
     assert await search_countries(Repository(), "Iran", 10, 2) == (["Iran", 10, 2], 1)
 
 
-
 @pytest.mark.asyncio
 async def test_channel_search_preserves_literal_wildcards() -> None:
     from channels_service.infrastructure.persistence.repositories import _search_pattern

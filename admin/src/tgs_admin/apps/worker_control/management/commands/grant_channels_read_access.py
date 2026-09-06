@@ -10,7 +10,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         channels_user = os.getenv("CHANNELS_DB_USER", "tgs_channels")
         with connection.cursor() as cursor:
-            cursor.execute("GRANT USAGE ON SCHEMA public TO %s" % connection.ops.quote_name(channels_user))
+            cursor.execute(
+                "GRANT USAGE ON SCHEMA public TO %s"
+                % connection.ops.quote_name(channels_user)
+            )
             for table in ("categories", "countries", "channels"):
                 quoted_table = connection.ops.quote_name(table)
                 quoted_user = connection.ops.quote_name(channels_user)
@@ -19,8 +22,7 @@ class Command(BaseCommand):
                     % (quoted_table, quoted_user)
                 )
                 cursor.execute(
-                    "GRANT SELECT ON TABLE %s TO %s"
-                    % (quoted_table, quoted_user)
+                    "GRANT SELECT ON TABLE %s TO %s" % (quoted_table, quoted_user)
                 )
         self.stdout.write(
             self.style.SUCCESS(

@@ -22,7 +22,7 @@ async def test_health_and_public_graphql():
         response = await client.post(
             "/graphql",
             json={
-                'query': 'query { channels(search: \"   \", limit: 10, offset: 0) { total } }'
+                "query": 'query { channels(search: "   ", limit: 10, offset: 0) { total } }'
             },
         )
         assert response.status_code == 200

@@ -27,7 +27,11 @@ def test_channel_urls_must_be_a_urls_list(client):
     )
 
     channel = Channel(
-        name="Example", category=category, language="en", country=country, urls={"urls": [123]}
+        name="Example",
+        category=category,
+        language="en",
+        country=country,
+        urls={"urls": [123]},
     )
     with pytest.raises(ValidationError):
         channel.full_clean()
@@ -39,11 +43,17 @@ def test_channel_uuid_is_generated_for_each_record():
         country_code="US", country_name="United States", timezone="America/New_York"
     )
     first = Channel.objects.create(
-        name="First", category=category, language="en", country=country,
+        name="First",
+        category=category,
+        language="en",
+        country=country,
         urls={"urls": ["https://first.example"]},
     )
     second = Channel.objects.create(
-        name="Second", category=category, language="en", country=country,
+        name="Second",
+        category=category,
+        language="en",
+        country=country,
         urls={"urls": ["https://second.example"]},
     )
 
@@ -115,7 +125,10 @@ def test_worker_health_requires_exactly_one_worker():
         def registered(self):
             return {"worker-a": ["task"]}
 
-    with patch("tgs_admin.apps.monitoring.services.app.control.inspect", return_value=Inspector()):
+    with patch(
+        "tgs_admin.apps.monitoring.services.app.control.inspect",
+        return_value=Inspector(),
+    ):
         result = worker_status()
 
     assert result["count"] == 1
