@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-@dataclass(slots=True, frozen=True)
+@dataclass(frozen=True, slots=True)
 class Country:
     country_code: str
     country_name: str
@@ -9,7 +9,7 @@ class Country:
     has_channels: bool
     channel_count: int
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, object]:
         return {
             "country_code": self.country_code,
             "country_name": self.country_name,

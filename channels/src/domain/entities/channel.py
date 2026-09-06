@@ -1,20 +1,22 @@
 from dataclasses import dataclass
+from uuid import UUID
+from .category import Category
 
 
-@dataclass(slots=True, frozen=True)
+@dataclass(frozen=True, slots=True)
 class Channel:
-    id: str
+    id: UUID
     name: str
-    category: str
+    category: Category
     language: str
     country_code: str
     urls: tuple[str, ...]
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, object]:
         return {
             "id": self.id,
             "name": self.name,
-            "category": self.category,
+            "category": self.category.to_dict(),
             "language": self.language,
             "country_code": self.country_code,
             "urls": list(self.urls),
