@@ -1,8 +1,8 @@
 from uuid import uuid4
 import pytest
-from src.domain.entities.category import Category
-from src.domain.entities.channel import Channel
-from src.domain.entities.country import Country
+from channels_service.domain.entities.category import Category
+from channels_service.domain.entities.channel import Channel
+from channels_service.domain.entities.country import Country
 
 
 def test_country_is_immutable_and_serializable():

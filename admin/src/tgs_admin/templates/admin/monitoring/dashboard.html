@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>System Dashboard</h1>
+<div class="monitor-actions">
+<a href="{% url 'monitoring_channels' %}">Channels Health</a>
+<a href="{% url 'monitoring_workers' %}">Workers</a>
+<a href="{% url 'monitoring_logs' %}">Logs</a>
+<a href="{% url 'worker_configuration' %}">Worker Schedule</a>
+</div>
+<div class="dashboard-grid">
+<div class="monitor-card"><h2>CPU</h2><div class="monitor-value">{{ system.cpu_percent }}%</div></div>
+<div class="monitor-card"><h2>Memory</h2><div class="monitor-value">{{ system.memory_percent }}%</div></div>
+<div class="monitor-card"><h2>Disk</h2><div class="monitor-value">{{ system.disk_percent }}%</div></div>
+<div class="monitor-card"><h2>Channels</h2><div class="monitor-value {% if channels.status == 'healthy' %}monitor-ok{% else %}monitor-bad{% endif %}">{{ channels.status }}</div></div>
+<div class="monitor-card"><h2>Workers</h2><div class="monitor-value">{{ workers.count }}</div><div>Active tasks: {{ workers.active_tasks }}</div></div>
+</div>
+{% endblock %}

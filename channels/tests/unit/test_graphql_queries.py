@@ -2,10 +2,10 @@ from uuid import uuid4
 
 import pytest
 
-from src.domain.entities.category import Category
-from src.domain.entities.channel import Channel
-from src.domain.entities.country import Country
-from src.presentation.graphql.schema import channel_type, country_type
+from channels_service.domain.entities.category import Category
+from channels_service.domain.entities.channel import Channel
+from channels_service.domain.entities.country import Country
+from channels_service.presentation.graphql.schema import channel_type, country_type
 
 
 def test_channel_type_exposes_nested_category_and_urls() -> None:

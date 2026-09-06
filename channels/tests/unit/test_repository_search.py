@@ -1,4 +1,4 @@
-from src.infrastructure.persistence.repositories import SQLAlchemyChannelRepository, SQLAlchemyCountryRepository
+from channels_service.infrastructure.persistence.repositories import SQLAlchemyChannelRepository, SQLAlchemyCountryRepository
 
 
 def test_channel_repository_contract_has_only_read_operations():

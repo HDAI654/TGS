@@ -11,7 +11,7 @@ pytestmark = pytest.mark.skipif(
 
 @pytest.mark.asyncio
 async def test_health_and_public_graphql():
-    from src.presentation.app import app
+    from channels_service.presentation.app import app
 
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:

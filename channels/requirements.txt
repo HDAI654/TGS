@@ -1,0 +1,8 @@
+fastapi==0.138.1
+uvicorn[standard]==0.35.0
+SQLAlchemy==2.0.51
+asyncpg==0.31.0
+strawberry-graphql==0.320.0
+httpx==0.28.1
+pytest==9.1.1
+pytest-asyncio==1.4.0

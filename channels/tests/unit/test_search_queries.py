@@ -1,6 +1,6 @@
 import pytest
-from src.application.queries.channel_queries import search_channels
-from src.application.queries.country_queries import search_countries
+from channels_service.application.queries.channel_queries import search_channels
+from channels_service.application.queries.country_queries import search_countries
 
 
 class Repository:
@@ -33,6 +33,6 @@ async def test_country_search_delegates_non_empty_text():
 
 @pytest.mark.asyncio
 async def test_channel_search_preserves_literal_wildcards() -> None:
-    from src.infrastructure.persistence.repositories import _search_pattern
+    from channels_service.infrastructure.persistence.repositories import _search_pattern
 
     assert _search_pattern("50%_\\") == "%50\\%\\_\\\\%"

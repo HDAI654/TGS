@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>Worker Health</h1>
+<div class="dashboard-grid">
+<div class="monitor-card"><h2>Status</h2><div class="monitor-value">{{ workers.status }}</div></div>
+<div class="monitor-card"><h2>Workers</h2><div class="monitor-value">{{ workers.count }}</div><p>{{ workers.workers|join:", " }}</p></div>
+<div class="monitor-card"><h2>Active tasks</h2><div class="monitor-value">{{ workers.active_tasks }}</div></div>
+<div class="monitor-card"><h2>Schedule</h2>
+{% if workers.schedule.configured %}
+<p><strong>{{ workers.schedule.interval }}</strong></p>
+<p>Enabled: {{ workers.schedule.enabled }}</p>
+<p>Last run: {{ workers.schedule.last_run_at|default:"Not run yet" }}</p>
+<p>Next run: {{ workers.schedule.next_run_at|default:"Pending" }}</p>
+{% else %}<p>No schedule configured.</p>{% endif %}
+</div>
+</div>
+{% endblock %}

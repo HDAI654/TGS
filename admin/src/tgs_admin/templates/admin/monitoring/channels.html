@@ -1,0 +1,2 @@
+{% extends "admin/base_site.html" %}
+{% block content %}<h1>Channels Service Health</h1><div class="monitor-card"><div class="monitor-value">{{ channels.status }}</div><p>HTTP status: {{ channels.http_status|default:"-" }}</p><p>Latency: {{ channels.latency_ms|default:"-" }} ms</p><p>{{ channels.error|default:"" }}</p></div>{% endblock %}

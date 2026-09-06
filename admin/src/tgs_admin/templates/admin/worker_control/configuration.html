@@ -1,0 +1,8 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>Worker Schedule</h1>
+<div class="monitor-card">
+<p>Exactly one <code>update_data</code> task is configured.</p>
+<form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit" class="default">Save schedule</button></form>
+</div>
+{% endblock %}
