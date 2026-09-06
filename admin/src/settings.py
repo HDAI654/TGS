@@ -18,11 +18,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_celery_beat",
-    "tgs_admin.apps.categories",
-    "tgs_admin.apps.countries",
-    "tgs_admin.apps.channels",
-    "tgs_admin.apps.monitoring",
-    "tgs_admin.apps.worker_control",
+    "src.apps.categories",
+    "src.apps.countries",
+    "src.apps.channels",
+    "src.apps.monitoring",
+    "src.apps.worker_control",
 ]
 
 MIDDLEWARE = [
@@ -34,11 +34,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-ROOT_URLCONF = "tgs_admin.urls"
+ROOT_URLCONF = "src.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "src" / "tgs_admin" / "templates"],
+        "DIRS": [BASE_DIR / "src" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -82,7 +82,7 @@ CELERY_TASK_REJECT_ON_WORKER_LOST = True
 
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
-    for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+    for origin in os.getenv("CSsrcRF_TRUSTED_ORIGINS", "").split(",")
     if origin.strip()
 ]
 
