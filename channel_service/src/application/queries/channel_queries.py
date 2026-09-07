@@ -1,11 +1,4 @@
-"""Channel query use cases.
-
-Orchestrate read-only channel retrieval. Domain rules are not required;
-validation here covers application contracts (pagination, search presence).
-"""
-
 from uuid import UUID
-
 from src.domain.entities.channel import Channel
 from src.domain.ports.channel_repository import ChannelRepository
 from src.exceptions.application import InvalidPaginationError

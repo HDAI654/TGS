@@ -1,16 +1,24 @@
-"""Environment-driven configuration for the channels service.
-
-Validated at import time for required values. Application and Domain never
-select infrastructure implementations from environment variables.
-"""
+"""Environment-driven configuration for the channels service."""
 
 import os
+from pathlib import Path
+from dotenv import load_dotenv
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
-APP_NAME = os.getenv("APP_NAME", "TGS Channels")
-APP_ENV = os.getenv("APP_ENV", "production")
-CORS_ALLOWED_ORIGINS = [
-    origin.strip()
-    for origin in os.getenv("CORS_ALLOWED_ORIGINS", "*").split(",")
-    if origin.strip()
-]
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+_env = BASE_DIR / ".env"
+if os.getenv("APP_NAME") is None and _env.exists():
+    load_dotenv(_env)
+
+
+class Config:
+    APP_NAME: str = os.getenv("APP_NAME", "TGS")
+    APP_ENV: str = os.getenv("APP_ENV", "development")
+
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
+
+    CORS_ALLOWED_ORIGINS = [
+        origin.strip()
+        for origin in os.getenv("CORS_ALLOWED_ORIGINS", "*").split(",")
+        if origin.strip()
+    ]

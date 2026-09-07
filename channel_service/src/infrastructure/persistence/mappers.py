@@ -1,7 +1,4 @@
-"""Explicit mappers between ORM models and domain entities.
-
-Domain entities never depend on SQLAlchemy types.
-"""
+"""Explicit mappers between ORM models and domain entities."""
 
 from src.domain.entities.category import Category
 from src.domain.entities.channel import Channel

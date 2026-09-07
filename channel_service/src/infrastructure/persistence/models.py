@@ -1,11 +1,6 @@
-"""SQLAlchemy ORM models for the shared read tables.
-
-These models mirror the admin-owned schema. They must not leak into Domain
-or Application layers.
-"""
+"""SQLAlchemy ORM models for the shared read tables."""
 
 from uuid import UUID
-
 from sqlalchemy import Boolean, ForeignKey, Integer, JSON, String
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship

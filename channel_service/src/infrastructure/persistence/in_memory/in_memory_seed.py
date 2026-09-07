@@ -4,8 +4,10 @@ from uuid import uuid4
 
 from src.domain.entities.channel import Channel, Category
 from src.domain.entities.country import Country
-from src.infrastructure.persistence.in_memory_repos import (
+from src.infrastructure.persistence.in_memory.in_memory_channel_repo import (
     InMemoryChannelRepository,
+)
+from src.infrastructure.persistence.in_memory.in_memory_country_repo import (
     InMemoryCountryRepository,
 )
 

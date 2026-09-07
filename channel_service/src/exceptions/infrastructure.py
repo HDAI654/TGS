@@ -1,10 +1,3 @@
-"""Infrastructure-layer errors for the channels service.
-
-Adapters catch provider/framework failures and raise these project-owned
-errors so higher layers never depend on SQLAlchemy, asyncpg, or driver types.
-"""
-
-
 class InfrastructureError(Exception):
     """Base infrastructure error."""
 

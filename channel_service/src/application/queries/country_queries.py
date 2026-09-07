@@ -1,9 +1,3 @@
-"""Country query use cases.
-
-Orchestrate read-only country retrieval. Validation covers application
-contracts (pagination, search presence).
-"""
-
 from src.domain.entities.country import Country
 from src.domain.ports.country_repository import CountryRepository
 from src.exceptions.application import InvalidPaginationError
