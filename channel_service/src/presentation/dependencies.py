@@ -2,14 +2,16 @@
 
 from fastapi import Request
 
-from src.conf import APP_ENV
-from src.infrastructure.persistence.repositories import (
+from src.conf import Config
+from src.infrastructure.persistence.postgres.postgres_channel_repo import (
     SQLAlchemyChannelRepository,
+)
+from src.infrastructure.persistence.postgres.postgres_country_repo import (
     SQLAlchemyCountryRepository,
 )
 
-if APP_ENV == "development":
-    from src.infrastructure.persistence.in_memory_seed import (
+if Config.APP_ENV == "development":
+    from src.infrastructure.persistence.in_memory.in_memory_seed import (
         channel_repo as in_memory_channel_repo,
         country_repo as in_memory_country_repo,
     )
@@ -17,7 +19,7 @@ if APP_ENV == "development":
 
 def build_graphql_context(request: Request) -> dict:
     """Build the GraphQL context with injected read repositories."""
-    if APP_ENV == "development":
+    if Config.APP_ENV == "development":
         # Use in-memory repositories (ignore the request session)
         return {
             "request": request,

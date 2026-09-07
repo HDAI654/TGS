@@ -1,55 +1,51 @@
-"""Shared test fixtures for repository tests."""
-
-from unittest.mock import AsyncMock, MagicMock
+"""Pytest configuration and shared fixtures."""
 
 import pytest
+from unittest.mock import AsyncMock, MagicMock, Mock
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from src.infrastructure.persistence.models import (
-    CategoryModel,
-    ChannelModel,
-    CountryModel,
+from src.infrastructure.persistence.postgres.postgres_channel_repo import (
+    SQLAlchemyChannelRepository,
+)
+from src.infrastructure.persistence.postgres.postgres_country_repo import (
+    SQLAlchemyCountryRepository,
 )
 
 
 @pytest.fixture
-def mock_session() -> AsyncMock:
-    """Return a mock AsyncSession with async execute method."""
+def mock_session():
+    """Create a mock AsyncSession."""
     session = AsyncMock(spec=AsyncSession)
-    # Default execute returns a mock that can be chained
-    mock_result = AsyncMock()
-    mock_result.scalar_one_or_none = MagicMock(return_value=None)
-    mock_result.scalars = MagicMock(return_value=AsyncMock())
-    mock_result.scalars.return_value.all = MagicMock(return_value=[])
-    session.execute = AsyncMock(return_value=mock_result)
+    session.execute = AsyncMock()
     return session
 
 
 @pytest.fixture
-def sample_category_model() -> CategoryModel:
-    return CategoryModel(id=1, name="News")
+def mock_channel_repo(mock_session):
+    """Create a mock channel repository with mock session."""
+    return SQLAlchemyChannelRepository(mock_session)
 
 
 @pytest.fixture
-def sample_country_model() -> CountryModel:
-    return CountryModel(
-        country_code="US",
-        country_name="United States",
-        timezone="America/New_York",
-        has_channels=True,
-        channel_count=10,
-    )
+def mock_country_repo(mock_session):
+    """Create a mock country repository with mock session."""
+    return SQLAlchemyCountryRepository(mock_session)
 
 
 @pytest.fixture
-def sample_channel_model(sample_category_model, sample_country_model) -> ChannelModel:
-    return ChannelModel(
-        id="12345678-1234-1234-1234-123456789abc",
-        name="CNN",
-        category=sample_category_model,
-        country=sample_country_model,
-        language="en",
-        country_code="US",
-        urls={"urls": ["https://cnn.com"]},
-        category_id=1,
-    )
+def mock_result():
+    """Create a mock result object."""
+    result = Mock()
+    result.scalar_one_or_none = Mock()
+    result.scalars = Mock()
+    result.all = Mock()
+    result.scalar = Mock()
+    return result
+
+
+@pytest.fixture
+def mock_scalar_result():
+    """Create a mock result for scalar queries."""
+    result = Mock()
+    result.scalar_one = Mock()
+    result.scalar = Mock()
+    return result
