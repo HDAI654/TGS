@@ -1,17 +1,33 @@
 import os
 from pathlib import Path
+import dj_database_url
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-SECRET_KEY = (
-    os.getenv("DJANGO_SECRET_KEY")
-    or "a1843a4coyq=lnj!l&eboi*c*0f*d!1fe4i@yos@&s%1ct#h69"
-)
+# ===== APP =====
+
+APP_NAME = os.getenv("APP_NAME", "TGS")
+APP_ENV = os.getenv("APP_ENV", "development")
+BASE_DIR = Path(__file__).resolve().parent.parent
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-secret")
+
 DEBUG = os.getenv("DJANGO_DEBUG", "false").lower() == "true"
+
+
+# ===== HOST / SECURITY =====
+
 ALLOWED_HOSTS = [
     host.strip()
     for host in os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
     if host.strip()
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
+
+# ===== APPS =====
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -25,8 +41,10 @@ INSTALLED_APPS = [
     "src.apps.countries",
     "src.apps.channels",
     "src.apps.monitoring",
-    "src.apps.worker_control",
 ]
+
+
+# ===== MIDDLEWARE =====
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -37,7 +55,12 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+
+# ===== TEMPLATES =====
+
 ROOT_URLCONF = "src.urls"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -52,7 +75,14 @@ TEMPLATES = [
         },
     },
 ]
+
+
+# ===== WSGI =====
+
 WSGI_APPLICATION = "src.wsgi.application"
+
+
+# ===== DATABASE =====
 
 if os.environ.get("APP_ENV", "development") == "development":
     # Use SQLite for development
@@ -65,64 +95,78 @@ if os.environ.get("APP_ENV", "development") == "development":
 else:
     # Use PostgreSQL for production
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ["POSTGRES_DB"],
-            "USER": os.environ["ADMIN_DB_USER"],
-            "PASSWORD": os.environ["ADMIN_DB_PASSWORD"],
-            "HOST": os.getenv("POSTGRES_HOST", "db"),
-            "PORT": os.getenv("POSTGRES_PORT", "5432"),
-        }
+        "default": dj_database_url.parse(
+            os.environ["DATABASE_URL"],
+            conn_max_age=600,
+        )
     }
+
+
+# ===== INTERNATIONALIZATION =====
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
-STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# ===== AUTHENTICATION =====
 
 LOGIN_URL = "/admin/login/"
 LOGIN_REDIRECT_URL = "/admin/"
 LOGOUT_REDIRECT_URL = "/admin/login/"
 
-CELERY_BROKER_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")
-CELERY_RESULT_BACKEND = os.getenv("REDIS_URL", "redis://redis:6379/0")
-CELERY_TIMEZONE = "UTC"
-CELERY_WORKER_PREFETCH_MULTIPLIER = 1
-CELERY_TASK_ACKS_LATE = True
-CELERY_TASK_REJECT_ON_WORKER_LOST = True
-
-CSRF_TRUSTED_ORIGINS = [
-    origin.strip()
-    for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
-    if origin.strip()
-]
+# ===== LOGGING =====
 
 LOGS_DIR = BASE_DIR / "logs"
+LOG_FILE = LOGS_DIR / "app.log"
+
 LOGS_DIR.mkdir(exist_ok=True)
+
+if APP_ENV == "development":
+    ROOT_LOG_LEVEL = "DEBUG"
+    CONSOLE_LOG_LEVEL = "DEBUG"
+    FILE_LOG_LEVEL = "INFO"
+else:
+    ROOT_LOG_LEVEL = "INFO"
+    CONSOLE_LOG_LEVEL = "ERROR"
+    FILE_LOG_LEVEL = "INFO"
+
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
         "standard": {
-            "format": "{asctime} {levelname} {name} {message}",
-            "style": "{",
+            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
     "handlers": {
-        "console": {"class": "logging.StreamHandler", "formatter": "standard"},
-        "file": {
-            "class": "logging.handlers.WatchedFileHandler",
-            "filename": str(LOGS_DIR / "admin.log"),
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": CONSOLE_LOG_LEVEL,
             "formatter": "standard",
         },
+        "file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "level": FILE_LOG_LEVEL,
+            "formatter": "standard",
+            "filename": str(LOG_FILE),
+            "maxBytes": 20 * 1024 * 1024,
+            "backupCount": 3,
+            "encoding": "utf-8",
+        },
     },
-    "root": {"handlers": ["console", "file"], "level": "INFO"},
+    "root": {
+        "level": ROOT_LOG_LEVEL,
+        "handlers": (["console"] if ROOT_LOG_LEVEL == "DEBUG" else ["console", "file"]),
+    },
 }
 
-# Static files (CSS, JavaScript, Images)
+# ===== STATIC FILES =====
+
 STATIC_URL = "/static/"
 
 # Directory where static files will be collected (for production)
@@ -132,3 +176,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+# ===== MEDIA FILES =====
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"

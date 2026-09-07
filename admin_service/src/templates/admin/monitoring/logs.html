@@ -1,3 +1,60 @@
 {% extends "admin/base_site.html" %}
-{% block content %}<h1>Recent Logs</h1><div class="log-box">{% for line in logs %}{{ line }}
-{% empty %}No log file is available yet.{% endfor %}</div>{% endblock %}
+
+{% block breadcrumbs %} 
+<div class="breadcrumbs"> 
+    <a href="{% url 'admin:index' %}">Home</a> › Logs
+</div> 
+{% endblock %}
+
+{% block content %}
+
+<div class="tgs-page-header">
+    <div>
+        <h1 class="tgs-page-title">Application Logs</h1>
+        <p class="tgs-page-description">
+            Recent application events and diagnostic information.
+        </p>
+    </div>
+</div>
+
+
+<div class="tgs-toolbar">
+
+    <a class="tgs-button"
+       href="{% url 'monitoring_dashboard' %}">
+        ← Dashboard
+    </a>
+
+    <a class="tgs-button tgs-button-primary"
+       href="{% url 'monitoring_logs' %}">
+        Logs
+    </a>
+
+</div>
+
+
+<div class="tgs-log-container">
+
+    <div class="tgs-log-header">
+
+        <span>
+            Application Log
+        </span>
+
+        <span>
+            Recent entries
+        </span>
+
+    </div>
+
+
+    <div class="tgs-log-body">
+{% for line in logs %}{{ line }}
+{% empty %}
+No log file is available yet.
+{% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

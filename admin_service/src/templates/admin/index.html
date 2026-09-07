@@ -1,0 +1,52 @@
+{% extends "admin/index.html" %}
+
+{% block content %}
+
+{{ block.super }}
+
+<div class="module">
+    <table>
+        <caption>Monitoring</caption>
+
+        <tr>
+            <th scope="row">
+                <a href="{% url 'monitoring_dashboard' %}">
+                    Dashboard
+                </a>
+            </th>
+            <td>
+                <a href="{% url 'monitoring_dashboard' %}">
+                    View
+                </a>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <a href="{% url 'monitoring_channels' %}">
+                    Channels Health
+                </a>
+            </th>
+            <td>
+                <a href="{% url 'monitoring_channels' %}">
+                    View
+                </a>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <a href="{% url 'monitoring_logs' %}">
+                    Logs
+                </a>
+            </th>
+            <td>
+                <a href="{% url 'monitoring_logs' %}">
+                    View
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{% endblock %}

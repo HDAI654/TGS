@@ -1,18 +1,483 @@
 {% extends "admin/base.html" %}
+
 {% block title %}TGS Administration{% endblock %}
-{% block branding %}<a href="{% url 'admin:index' %}" style="font-weight:700;">TGS Administration</a>{% endblock %}
+
+{% block branding %}
+<a href="{% url 'admin:index' %}" id="site-name">
+    TGS Administration
+</a>
+{% endblock %}
+
 {% block extrastyle %}
 {{ block.super }}
+
 <style>
-:root { --accent: #417690; }
-.dashboard-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; margin:20px 0; }
-.monitor-card { background:#fff; border:1px solid #ddd; border-radius:12px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,.05); }
-.monitor-card h2 { margin-top:0; font-size:18px; }
-.monitor-value { font-size:28px; font-weight:700; margin:8px 0; }
-.monitor-ok { color:#2e7d32; } .monitor-bad { color:#b71c1c; }
-.monitor-actions { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0; }
-.monitor-actions a { padding:10px 14px; border-radius:8px; background:var(--accent); color:white !important; text-decoration:none; }
-.log-box { background:#111827; color:#e5e7eb; border-radius:10px; padding:16px; overflow:auto; max-height:600px; white-space:pre-wrap; font-family:monospace; }
-@media (max-width:600px) { .monitor-card { padding:15px; } }
+    /* ============================================================
+       TGS Admin / Monitoring
+       ============================================================ */
+
+    :root {
+        --tgs-radius: 6px;
+        --tgs-radius-lg: 8px;
+        --tgs-border: var(--hairline-color);
+        --tgs-surface: var(--body-bg);
+        --tgs-surface-alt: var(--darkened-bg);
+        --tgs-muted: var(--body-quiet-color);
+        --tgs-primary: var(--button-bg);
+        --tgs-primary-hover: var(--button-hover-bg);
+        --tgs-success: #198754;
+        --tgs-warning: #d97706;
+        --tgs-danger: #dc3545;
+        --tgs-info: #0d6efd;
+    }
+
+    #site-name a,
+    #site-name {
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+
+    /* ------------------------------------------------------------
+       Page
+       ------------------------------------------------------------ */
+
+    .tgs-page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .tgs-page-title {
+        margin: 0 0 5px;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 1.25;
+        color: var(--body-fg);
+    }
+
+    .tgs-page-description {
+        margin: 0;
+        color: var(--body-quiet-color);
+        font-size: 13px;
+    }
+
+    /* ------------------------------------------------------------
+       Navigation
+       ------------------------------------------------------------ */
+
+    .tgs-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 24px;
+    }
+
+    .tgs-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+
+        min-height: 36px;
+        padding: 0 14px;
+
+        border: 1px solid var(--hairline-color);
+        border-radius: var(--tgs-radius);
+
+        background: var(--darkened-bg);
+        color: var(--body-fg) !important;
+
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1;
+
+        text-decoration: none !important;
+
+        transition:
+            background-color 120ms ease,
+            border-color 120ms ease,
+            transform 120ms ease;
+    }
+
+    .tgs-button:hover {
+        background: var(--selected-row);
+        border-color: var(--border-color);
+    }
+
+    .tgs-button:active {
+        transform: translateY(1px);
+    }
+
+    .tgs-button-primary {
+        background: var(--button-bg);
+        border-color: var(--button-bg);
+        color: var(--button-fg) !important;
+    }
+
+    .tgs-button-primary:hover {
+        background: var(--button-hover-bg);
+        border-color: var(--button-hover-bg);
+    }
+
+    /* ------------------------------------------------------------
+       Grid
+       ------------------------------------------------------------ */
+
+    .tgs-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .tgs-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    /* ------------------------------------------------------------
+       Cards
+       ------------------------------------------------------------ */
+
+    .tgs-card {
+        min-width: 0;
+        overflow: hidden;
+
+        background: var(--body-bg);
+        border: 1px solid var(--hairline-color);
+        border-radius: var(--tgs-radius-lg);
+
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .tgs-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+
+        padding: 14px 16px;
+
+        border-bottom: 1px solid var(--hairline-color);
+    }
+
+    .tgs-card-title {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--body-fg);
+    }
+
+    .tgs-card-body {
+        padding: 18px 16px;
+    }
+
+    .tgs-card-footer {
+        padding: 11px 16px;
+        border-top: 1px solid var(--hairline-color);
+        background: var(--darkened-bg);
+    }
+
+    /* ------------------------------------------------------------
+       Metric cards
+       ------------------------------------------------------------ */
+
+    .tgs-metric {
+        padding: 18px;
+    }
+
+    .tgs-metric-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 10px;
+
+        color: var(--body-quiet-color);
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .tgs-metric-value {
+        margin: 0;
+        color: var(--body-fg);
+        font-size: 28px;
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: -0.02em;
+    }
+
+    .tgs-metric-meta {
+        margin-top: 9px;
+        color: var(--body-quiet-color);
+        font-size: 12px;
+    }
+
+    /* ------------------------------------------------------------
+       Progress
+       ------------------------------------------------------------ */
+
+    .tgs-progress {
+        width: 100%;
+        height: 6px;
+        margin-top: 14px;
+
+        overflow: hidden;
+
+        background: var(--darkened-bg);
+        border-radius: 999px;
+    }
+
+    .tgs-progress-bar {
+        height: 100%;
+        min-width: 2px;
+
+        background: var(--button-bg);
+        border-radius: inherit;
+
+        transition: width 250ms ease;
+    }
+
+    .tgs-progress-success {
+        background: var(--tgs-success);
+    }
+
+    .tgs-progress-warning {
+        background: var(--tgs-warning);
+    }
+
+    .tgs-progress-danger {
+        background: var(--tgs-danger);
+    }
+
+    /* ------------------------------------------------------------
+       Status badges
+       ------------------------------------------------------------ */
+
+    .tgs-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        padding: 4px 8px;
+
+        border: 1px solid transparent;
+        border-radius: 999px;
+
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .tgs-status::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .tgs-status-success {
+        color: var(--tgs-success);
+        background: rgba(25, 135, 84, 0.10);
+        border-color: rgba(25, 135, 84, 0.20);
+    }
+
+    .tgs-status-warning {
+        color: var(--tgs-warning);
+        background: rgba(217, 119, 6, 0.10);
+        border-color: rgba(217, 119, 6, 0.20);
+    }
+
+    .tgs-status-danger {
+        color: var(--tgs-danger);
+        background: rgba(220, 53, 69, 0.10);
+        border-color: rgba(220, 53, 69, 0.20);
+    }
+
+    .tgs-status-neutral {
+        color: var(--body-quiet-color);
+        background: var(--darkened-bg);
+        border-color: var(--hairline-color);
+    }
+
+    /* ------------------------------------------------------------
+       Service health
+       ------------------------------------------------------------ */
+
+    .tgs-health {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .tgs-health-name {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .tgs-health-description {
+        margin: 4px 0 0;
+        color: var(--body-quiet-color);
+        font-size: 12px;
+    }
+
+    /* ------------------------------------------------------------
+       Information rows
+       ------------------------------------------------------------ */
+
+    .tgs-info-list {
+        margin: 0;
+    }
+
+    .tgs-info-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+
+        padding: 11px 0;
+
+        border-bottom: 1px solid var(--hairline-color);
+    }
+
+    .tgs-info-row:first-child {
+        padding-top: 0;
+    }
+
+    .tgs-info-row:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+
+    .tgs-info-label {
+        color: var(--body-quiet-color);
+        font-size: 12px;
+    }
+
+    .tgs-info-value {
+        color: var(--body-fg);
+        font-size: 13px;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    /* ------------------------------------------------------------
+       Logs
+       ------------------------------------------------------------ */
+
+    .tgs-log-container {
+        overflow: hidden;
+
+        border: 1px solid var(--hairline-color);
+        border-radius: var(--tgs-radius-lg);
+
+        background: #111827;
+    }
+
+    .tgs-log-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 10px 14px;
+
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+        color: #9ca3af;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .tgs-log-body {
+        max-height: 620px;
+        overflow: auto;
+
+        padding: 14px;
+
+        color: #d1d5db;
+        font-family:
+            "JetBrains Mono",
+            "SFMono-Regular",
+            Consolas,
+            "Liberation Mono",
+            monospace;
+        font-size: 12px;
+        line-height: 1.7;
+
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    /* ------------------------------------------------------------
+       Empty / error state
+       ------------------------------------------------------------ */
+
+    .tgs-empty {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .tgs-empty-title {
+        margin: 0 0 6px;
+        color: var(--body-fg);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .tgs-empty-description {
+        margin: 0;
+        color: var(--body-quiet-color);
+        font-size: 12px;
+    }
+
+    /* ------------------------------------------------------------
+       Responsive
+       ------------------------------------------------------------ */
+
+    @media (max-width: 1000px) {
+        .tgs-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .tgs-grid-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .tgs-page-header {
+            display: block;
+        }
+
+        .tgs-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .tgs-toolbar {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .tgs-button {
+            width: 100%;
+        }
+
+        .tgs-metric-value {
+            font-size: 25px;
+        }
+    }
 </style>
 {% endblock %}

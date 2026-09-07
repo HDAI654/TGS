@@ -1,17 +1,168 @@
 {% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %} 
+<div class="breadcrumbs"> 
+    <a href="{% url 'admin:index' %}">Home</a> › Dashboard 
+</div> 
+{% endblock %}
+
 {% block content %}
-<h1>System Dashboard</h1>
-<div class="monitor-actions">
-<a href="{% url 'monitoring_channels' %}">Channels Health</a>
-<a href="{% url 'monitoring_workers' %}">Workers</a>
-<a href="{% url 'monitoring_logs' %}">Logs</a>
-<a href="{% url 'worker_configuration' %}">Worker Schedule</a>
+
+<div class="tgs-page-header">
+    <div>
+        <h1 class="tgs-page-title">System Monitoring</h1>
+        <p class="tgs-page-description">
+            Real-time health and resource overview of TGS services.
+        </p>
+    </div>
 </div>
-<div class="dashboard-grid">
-<div class="monitor-card"><h2>CPU</h2><div class="monitor-value">{{ system.cpu_percent }}%</div></div>
-<div class="monitor-card"><h2>Memory</h2><div class="monitor-value">{{ system.memory_percent }}%</div></div>
-<div class="monitor-card"><h2>Disk</h2><div class="monitor-value">{{ system.disk_percent }}%</div></div>
-<div class="monitor-card"><h2>Channels</h2><div class="monitor-value {% if channels.status == 'healthy' %}monitor-ok{% else %}monitor-bad{% endif %}">{{ channels.status }}</div></div>
-<div class="monitor-card"><h2>Workers</h2><div class="monitor-value">{{ workers.count }}</div><div>Active tasks: {{ workers.active_tasks }}</div></div>
+
+<div class="tgs-toolbar">
+    <a class="tgs-button tgs-button-primary"
+       href="{% url 'monitoring_dashboard' %}">
+        Dashboard
+    </a>
+
+    <a class="tgs-button"
+       href="{% url 'monitoring_channels' %}">
+        Channels
+    </a>
+
+    <a class="tgs-button"
+       href="{% url 'monitoring_logs' %}">
+        Logs
+    </a>
 </div>
+
+
+<!-- System resources -->
+
+<div class="tgs-grid">
+
+    <div class="tgs-card">
+        <div class="tgs-metric">
+            <div class="tgs-metric-label">
+                CPU Usage
+            </div>
+
+            <p class="tgs-metric-value">
+                {{ system.cpu_percent }}%
+            </p>
+
+            <div class="tgs-progress">
+                <div
+                    class="tgs-progress-bar"
+                    style="width: {{ system.cpu_percent }}%;"
+                ></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="tgs-card">
+        <div class="tgs-metric">
+            <div class="tgs-metric-label">
+                Memory Usage
+            </div>
+
+            <p class="tgs-metric-value">
+                {{ system.memory_percent }}%
+            </p>
+
+            <div class="tgs-progress">
+                <div
+                    class="tgs-progress-bar"
+                    style="width: {{ system.memory_percent }}%;"
+                ></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="tgs-card">
+        <div class="tgs-metric">
+            <div class="tgs-metric-label">
+                Disk Usage
+            </div>
+
+            <p class="tgs-metric-value">
+                {{ system.disk_percent }}%
+            </p>
+
+            <div class="tgs-progress">
+                <div
+                    class="tgs-progress-bar"
+                    style="width: {{ system.disk_percent }}%;"
+                ></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Services -->
+
+<div class="tgs-grid-4">
+
+    <div class="tgs-card">
+
+        <div class="tgs-card-header">
+            <h2 class="tgs-card-title">
+                Channels Service
+            </h2>
+
+            {% if channels.status == "healthy" %}
+                <span class="tgs-status tgs-status-success">
+                    Healthy
+                </span>
+            {% elif channels.status %}
+                <span class="tgs-status tgs-status-danger">
+                    {{ channels.status }}
+                </span>
+            {% else %}
+                <span class="tgs-status tgs-status-neutral">
+                    Unknown
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="tgs-card-body">
+
+            <div class="tgs-info-list">
+
+                <div class="tgs-info-row">
+                    <span class="tgs-info-label">
+                        HTTP Status
+                    </span>
+
+                    <span class="tgs-info-value">
+                        {{ channels.http_status|default:"-" }}
+                    </span>
+                </div>
+
+                <div class="tgs-info-row">
+                    <span class="tgs-info-label">
+                        Latency
+                    </span>
+
+                    <span class="tgs-info-value">
+                        {{ channels.latency_ms|default:"-" }} ms
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="tgs-card-footer">
+            <a href="{% url 'monitoring_channels' %}">
+                View service details →
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}

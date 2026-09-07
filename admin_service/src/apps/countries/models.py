@@ -11,6 +11,7 @@ class Country(models.Model):
     class Meta:
         db_table = "countries"
         ordering = ("country_code",)
+        verbose_name_plural = "Countries"
 
     def __str__(self) -> str:
         return f"{self.country_code} - {self.country_name}"

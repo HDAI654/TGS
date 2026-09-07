@@ -1,2 +1,133 @@
 {% extends "admin/base_site.html" %}
-{% block content %}<h1>Channels Service Health</h1><div class="monitor-card"><div class="monitor-value">{{ channels.status }}</div><p>HTTP status: {{ channels.http_status|default:"-" }}</p><p>Latency: {{ channels.latency_ms|default:"-" }} ms</p><p>{{ channels.error|default:"" }}</p></div>{% endblock %}
+
+{% block breadcrumbs %} 
+<div class="breadcrumbs"> 
+    <a href="{% url 'admin:index' %}">Home</a> › Channels Health  
+</div> 
+{% endblock %}
+
+{% block content %}
+
+<div class="tgs-page-header">
+    <div>
+        <h1 class="tgs-page-title">Channels Service</h1>
+        <p class="tgs-page-description">
+            Health and connectivity information for the Channels service.
+        </p>
+    </div>
+</div>
+
+
+<div class="tgs-toolbar">
+
+    <a class="tgs-button"
+       href="{% url 'monitoring_dashboard' %}">
+        ← Dashboard
+    </a>
+
+    <a class="tgs-button tgs-button-primary"
+       href="{% url 'monitoring_channels' %}">
+        Channels
+    </a>
+
+</div>
+
+
+<div class="tgs-card">
+
+    <div class="tgs-card-header">
+
+        <h2 class="tgs-card-title">
+            Service Health
+        </h2>
+
+        {% if channels.status == "healthy" %}
+
+            <span class="tgs-status tgs-status-success">
+                Healthy
+            </span>
+
+        {% elif channels.status %}
+
+            <span class="tgs-status tgs-status-danger">
+                {{ channels.status }}
+            </span>
+
+        {% else %}
+
+            <span class="tgs-status tgs-status-neutral">
+                Unknown
+            </span>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="tgs-card-body">
+
+        <div class="tgs-info-list">
+
+            <div class="tgs-info-row">
+                <span class="tgs-info-label">
+                    Status
+                </span>
+
+                <span class="tgs-info-value">
+                    {{ channels.status|default:"-" }}
+                </span>
+            </div>
+
+
+            <div class="tgs-info-row">
+                <span class="tgs-info-label">
+                    HTTP Status
+                </span>
+
+                <span class="tgs-info-value">
+                    {{ channels.http_status|default:"-" }}
+                </span>
+            </div>
+
+
+            <div class="tgs-info-row">
+                <span class="tgs-info-label">
+                    Response Latency
+                </span>
+
+                <span class="tgs-info-value">
+                    {{ channels.latency_ms|default:"-" }} ms
+                </span>
+            </div>
+
+        </div>
+
+
+        {% if channels.error %}
+
+            <div style="
+                margin-top: 20px;
+                padding: 12px 14px;
+                border: 1px solid rgba(220, 53, 69, .25);
+                border-radius: 6px;
+                background: rgba(220, 53, 69, .08);
+                color: var(--body-fg);
+                font-size: 13px;
+            ">
+                <strong>Service Error</strong>
+
+                <div style="
+                    margin-top: 5px;
+                    color: var(--body-quiet-color);
+                ">
+                    {{ channels.error }}
+                </div>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

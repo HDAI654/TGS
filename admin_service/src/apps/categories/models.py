@@ -6,6 +6,7 @@ class Category(models.Model):
 
     class Meta:
         db_table = "categories"
+        verbose_name_plural = "Categories"
         ordering = ("id",)
 
     def __str__(self) -> str:
