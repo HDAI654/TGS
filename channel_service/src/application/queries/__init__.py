@@ -1,8 +1,8 @@
-from channels_service.application.queries.channel_queries import (
+from src.application.queries.channel_queries import (
     get_channel,
     search_channels,
 )
-from channels_service.application.queries.country_queries import (
+from src.application.queries.country_queries import (
     get_country,
     search_countries,
 )
