@@ -1,8 +1,4 @@
-"""Async SQLAlchemy engine and session factory.
-
-Timeouts are applied at the connection level. Session lifecycle is owned by
-the presentation composition root (per-request middleware).
-"""
+"""Async SQLAlchemy engine and session factory."""
 
 from collections.abc import AsyncGenerator
 from sqlalchemy.ext.asyncio import (

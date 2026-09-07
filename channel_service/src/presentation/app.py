@@ -2,20 +2,18 @@
 
 import logging
 from contextlib import asynccontextmanager
-
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from starlette.middleware.base import BaseHTTPMiddleware
 from strawberry.fastapi import GraphQLRouter
-
-from src.conf import APP_NAME, CORS_ALLOWED_ORIGINS, APP_ENV
+from src.conf import Config
 from src.presentation.dependencies import build_graphql_context
 from src.presentation.graphql.schema import schema
 
 logger = logging.getLogger(__name__)
 
-if APP_ENV != "development":
+if Config.APP_ENV != "development":
     from src.database import engine, session_factory
 
     @asynccontextmanager
@@ -35,16 +33,16 @@ if APP_ENV != "development":
                 await session.close()
 
 
-# Add session middleware only in production (or when using a real DB)
-if APP_ENV != "development":
-    app = FastAPI(title=APP_NAME, lifespan=lifespan)
+# Add session middleware only in production
+if Config.APP_ENV != "development":
+    app = FastAPI(title=Config.APP_NAME, lifespan=lifespan)
     app.add_middleware(SessionMiddleware)
 else:
-    app = FastAPI(title=APP_NAME)
+    app = FastAPI(title=Config.APP_NAME)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ALLOWED_ORIGINS,
+    allow_origins=Config.CORS_ALLOWED_ORIGINS,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -57,7 +55,7 @@ app.include_router(graphql_app, prefix="/graphql")
 @app.get("/health", tags=["health"])
 async def health() -> dict[str, str]:
     """Liveness/readiness probe."""
-    if APP_ENV == "development":
+    if Config.APP_ENV == "development":
         # In-memory repositories are always "healthy"
         return {"status": "healthy"}
     # Production: verify database connectivity

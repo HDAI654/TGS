@@ -14,7 +14,10 @@ from httpx import ASGITransport, AsyncClient
 os.environ["APP_ENV"] = "development"
 
 from src.main import app
-from src.infrastructure.persistence.in_memory_seed import channel_repo, country_repo
+from src.infrastructure.persistence.in_memory.in_memory_seed import (
+    channel_repo,
+    country_repo,
+)
 
 
 @pytest.fixture
