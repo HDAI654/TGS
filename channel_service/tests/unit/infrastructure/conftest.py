@@ -5,7 +5,11 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.infrastructure.persistence.models import CategoryModel, ChannelModel, CountryModel
+from src.infrastructure.persistence.models import (
+    CategoryModel,
+    ChannelModel,
+    CountryModel,
+)
 
 
 @pytest.fixture

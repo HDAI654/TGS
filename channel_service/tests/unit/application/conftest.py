@@ -7,6 +7,7 @@ from src.domain.entities.country import Country
 
 class MockChannelRepository:
     """Mock repository for Channel queries."""
+
     def __init__(self):
         self.get_by_id_return = None
         self.search_return = ([], 0)
@@ -24,6 +25,7 @@ class MockChannelRepository:
 
 class MockCountryRepository:
     """Mock repository for Country queries."""
+
     def __init__(self):
         self.get_by_id_return = None
         self.search_return = ([], 0)
@@ -48,18 +50,20 @@ def mock_channel_repo():
 def mock_country_repo():
     return MockCountryRepository()
 
+
 @pytest.fixture
 def sample_category():
     return Category(
-        id=0, 
+        id=0,
         name="Sport",
     )
+
 
 @pytest.fixture
 def sample_channel(sample_category):
     return Channel(
-        id=uuid4(), 
-        name="Test Channel", 
+        id=uuid4(),
+        name="Test Channel",
         category=sample_category,
         language="eng",
         country_code="US",
