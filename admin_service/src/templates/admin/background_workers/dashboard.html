@@ -1,0 +1,138 @@
+{% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    › Background Workers
+    › Dashboard
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="tgs-worker-dashboard">
+
+    <div class="tgs-worker-header">
+        <div>
+            <h1>Background Workers</h1>
+            <p>
+                Manage the background data update worker.
+            </p>
+        </div>
+    </div>
+
+    <div class="tgs-worker-card">
+
+        <div class="tgs-worker-card-header">
+            <h2>Update Data Worker</h2>
+
+            {% if worker.running %}
+                <span class="tgs-status tgs-status-running">
+                    ● Running
+                </span>
+            {% else %}
+                <span class="tgs-status tgs-status-stopped">
+                    ● Stopped
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="tgs-worker-info">
+
+            <div class="tgs-worker-info-item">
+                <span class="tgs-label">Status</span>
+
+                {% if worker.running %}
+                    <strong>Running</strong>
+                {% else %}
+                    <strong>Stopped</strong>
+                {% endif %}
+            </div>
+
+            <div class="tgs-worker-info-item">
+                <span class="tgs-label">Interval</span>
+
+                {% if worker.interval_minutes %}
+                    <strong>
+                        {{ worker.interval_minutes }} minute{{ worker.interval_minutes|pluralize }}
+                    </strong>
+                {% else %}
+                    <strong>Not configured</strong>
+                {% endif %}
+            </div>
+
+            <div class="tgs-worker-info-item">
+                <span class="tgs-label">Task</span>
+                <strong>{{ worker.task }}</strong>
+            </div>
+
+        </div>
+
+        <div class="tgs-worker-actions">
+
+            {% if not worker.running %}
+                <form method="post" action="{% url 'background_worker_start' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="button default">
+                        Start Worker
+                    </button>
+                </form>
+            {% else %}
+                <form method="post" action="{% url 'background_worker_stop' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="button">
+                        Stop Worker
+                    </button>
+                </form>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <div class="tgs-worker-card">
+
+        <div class="tgs-worker-card-header">
+            <h2>Restart Worker</h2>
+        </div>
+
+        <p class="tgs-worker-description">
+            Change the execution interval and start the worker again.
+        </p>
+
+        <form
+            method="post"
+            action="{% url 'background_worker_restart' %}"
+            class="tgs-restart-form"
+        >
+            {% csrf_token %}
+
+            <div class="tgs-form-field">
+                <label for="interval_minutes">
+                    Interval
+                </label>
+
+                <input
+                    id="interval_minutes"
+                    name="interval_minutes"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value="{{ worker.interval_minutes|default:1 }}"
+                    required
+                >
+
+                <span>minutes</span>
+            </div>
+
+            <button type="submit" class="button default">
+                Restart Worker
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "src.apps.countries",
     "src.apps.channels",
     "src.apps.monitoring",
+    "src.apps.background_workers"
 ]
 
 
@@ -181,3 +182,7 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# ===== CELERY =====
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://127.0.0.1:6379/0")
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"

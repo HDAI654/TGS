@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/monitoring/", include("src.apps.monitoring.urls")),
+    path("background-workers/", include("src.apps.background_workers.urls")),
     path("admin/", admin.site.urls),
 ]
 
