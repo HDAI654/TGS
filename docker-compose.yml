@@ -1,0 +1,227 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: tgs-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: tgs
+      POSTGRES_USER: tgs
+      POSTGRES_PASSWORD: wefif5w452ewf52wef1w0c0
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tgs -d tgs"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: tgs-redis
+    restart: unless-stopped
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  channel_service:
+    build:
+      context: ./channel_service
+      dockerfile: Dockerfile
+
+    container_name: tgs-channel-service
+    restart: unless-stopped
+
+    environment:
+      # App
+      APP_NAME: TGS
+      APP_ENV: development
+
+      # PostgreSQL
+      DATABASE_URL: postgresql+asyncpg://tgs:wefif5w452ewf52wef1w0c0@postgres:5432/tgs
+
+      # CORS
+      CORS_ALLOWED_ORIGINS: "*"
+
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    command:
+      [
+        "uvicorn",
+        "src.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8080"
+      ]
+
+  admin_service:
+    build:
+      context: ./admin_service
+      dockerfile: Dockerfile
+
+    container_name: tgs-admin-service
+    restart: unless-stopped
+
+    environment:
+      # App
+      APP_NAME: TGS
+      APP_ENV: development
+
+      # Channels App URL
+      CHANNELS_HEALTH_URL: http://channel_service:8080/health
+
+      # Django
+      DJANGO_SECRET_KEY: "!$^2*5d#3_*f#y!y*z8#_516k9k=d-0j)5ubijbbdgib_927r_"
+      DJANGO_ALLOWED_HOSTS: "*"
+      DJANGO_DEBUG: "false"
+
+      # PostgreSQL
+      DATABASE_URL: postgresql://tgs:wefif5w452ewf52wef1w0c0@postgres:5432/tgs
+
+      # Super User
+      SUPER_USERNAME: tgs-admin-15963
+      SUPER_PASSWORD: "abcd147852"
+
+      # Celery
+      CELERY_BROKER_URL: redis://redis:6379/0
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+      redis:
+        condition: service_healthy
+
+      channel_service:
+        condition: service_started
+
+    command:
+      [
+        "sh",
+        "-c",
+        "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+      ]
+
+  celery_worker:
+    build:
+      context: ./admin_service
+      dockerfile: Dockerfile
+
+    container_name: tgs-celery-worker
+    restart: unless-stopped
+
+    environment:
+      # App
+      APP_NAME: TGS
+      APP_ENV: development
+
+      # Channels App URL
+      CHANNELS_HEALTH_URL: http://channel_service:8080/health
+
+      # Django
+      DJANGO_SECRET_KEY: "!$^2*5d#3_*f#y!y*z8#_516k9k=d-0j)5ubijbbdgib_927r_"
+      DJANGO_ALLOWED_HOSTS: "*"
+      DJANGO_DEBUG: "false"
+
+      # PostgreSQL
+      DATABASE_URL: postgresql://tgs:wefif5w452ewf52wef1w0c0@postgres:5432/tgs
+
+      # Super User
+      SUPER_USERNAME: tgs-admin-15963
+      SUPER_PASSWORD: "abcd147852"
+
+      # Celery
+      CELERY_BROKER_URL: redis://redis:6379/0
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+      redis:
+        condition: service_healthy
+
+    command:
+      [
+        "celery",
+        "-A",
+        "src",
+        "worker",
+        "--loglevel=info"
+      ]
+
+  celery_beat:
+    build:
+      context: ./admin_service
+      dockerfile: Dockerfile
+
+    container_name: tgs-celery-beat
+    restart: unless-stopped
+
+    environment:
+      # App
+      APP_NAME: TGS
+      APP_ENV: development
+
+      # Channels App URL
+      CHANNELS_HEALTH_URL: http://channel_service:8080/health
+
+      # Django
+      DJANGO_SECRET_KEY: "!$^2*5d#3_*f#y!y*z8#_516k9k=d-0j)5ubijbbdgib_927r_"
+      DJANGO_ALLOWED_HOSTS: "*"
+      DJANGO_DEBUG: "false"
+
+      # PostgreSQL
+      DATABASE_URL: postgresql://tgs:wefif5w452ewf52wef1w0c0@postgres:5432/tgs
+
+      # Super User
+      SUPER_USERNAME: tgs-admin-15963
+      SUPER_PASSWORD: "abcd147852"
+
+      # Celery
+      CELERY_BROKER_URL: redis://redis:6379/0
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+      redis:
+        condition: service_healthy
+
+    command:
+      [
+        "celery",
+        "-A",
+        "src",
+        "beat",
+        "--loglevel=info",
+        "--scheduler",
+        "django_celery_beat.schedulers:DatabaseScheduler"
+      ]
+
+
+volumes:
+  postgres_data:
+  redis_data:
