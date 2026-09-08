@@ -1,7 +1,6 @@
 from __future__ import annotations
 from django_celery_beat.models import IntervalSchedule, PeriodicTask
 
-
 TASK_NAME = "Update categories, countries, and channels"
 TASK_PATH = "src.apps.background_workers.tasks.update_data"
 

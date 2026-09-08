@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "src.apps.countries",
     "src.apps.channels",
     "src.apps.monitoring",
-    "src.apps.background_workers"
+    "src.apps.background_workers",
 ]
 
 
