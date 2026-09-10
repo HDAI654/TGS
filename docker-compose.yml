@@ -214,6 +214,19 @@ services:
         "django_celery_beat.schedulers:DatabaseScheduler"
       ]
 
+  frontend:
+    build:
+      context: ./test_frontend
+      dockerfile: Dockerfile
+
+    container_name: tgs-frontend
+    restart: unless-stopped
+
+    ports:
+      - "5500:5500"
+
+    environment:
+      API_URL: "http://localhost:8080/graphql"
 
 volumes:
   postgres_data:
