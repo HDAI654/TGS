@@ -47,3 +47,6 @@ class InMemoryChannelRepository(ChannelRepository):
 
     async def exist(self, id: UUID) -> bool:
         return id in self._channels
+
+    async def count_channels(self) -> int:
+        return len(self._channels)

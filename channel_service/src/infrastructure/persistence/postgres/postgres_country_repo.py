@@ -121,6 +121,21 @@ class SQLAlchemyCountryRepository(CountryRepository):
         logger.debug("Country exists check completed: code=%s exists=%s", id, res)
         return res
 
+    async def count_countries(self) -> int:
+        """Return the total number of countries."""
+        logger.debug("Counting all countries")
+
+        result = await self._execute_db_operation(
+            "count_countries",
+            self._session.execute,
+            select(func.count(CountryModel.id)),
+        )
+
+        total = int(result.scalar_one())
+        logger.debug("Total countries: %d", total)
+
+        return total
+
     async def _execute_db_operation(self, operation: str, coro, *args, **kwargs):
         try:
             logger.debug("Executing database operation: %s", operation)

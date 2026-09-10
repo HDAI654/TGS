@@ -23,3 +23,7 @@ class CountryRepository(ABC):
     @abstractmethod
     async def exist(self, id: str) -> bool:
         raise NotImplementedError
+
+    @abstractmethod
+    async def count_countries(self) -> int:
+        raise NotImplementedError

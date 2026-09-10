@@ -38,3 +38,6 @@ class InMemoryCountryRepository(CountryRepository):
 
     async def exist(self, id: str) -> bool:
         return id in self._countries
+
+    async def count_countries(self) -> int:
+        return len(self._countries)

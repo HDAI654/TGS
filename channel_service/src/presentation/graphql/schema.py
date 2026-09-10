@@ -17,6 +17,7 @@ from src.application.queries.country_queries import (
     get_country,
     search_countries,
 )
+from src.application.queries.count_query import get_count
 from src.domain.entities.channel import Channel
 from src.domain.entities.country import Country
 
@@ -60,6 +61,12 @@ class CountryConnection:
     total: int
     limit: int
     offset: int
+
+
+@strawberry.type
+class Count:
+    channels: int
+    countries: int
 
 
 def channel_type(entity: Channel) -> ChannelType:
@@ -135,6 +142,16 @@ class Query:
             total=total,
             limit=limit,
             offset=offset,
+        )
+
+    @strawberry.field
+    async def count(
+        self,
+    ) -> Count | None:
+        result = await get_count()
+        return Count(
+            channels=result["channels"],
+            countries=result["countries"],
         )
 
 
