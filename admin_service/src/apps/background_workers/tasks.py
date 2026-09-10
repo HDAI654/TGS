@@ -246,10 +246,8 @@ class TVGardenCrawler:
 
         parsed = urlparse(value)
 
-        return (
-            parsed.scheme in {"http", "https"}
-            and bool(parsed.netloc)
-        )
+        return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
 
 def _update_countries(
     country_records: Iterable[dict[str, Any]],
@@ -273,6 +271,7 @@ def _update_countries(
         processed += 1
 
     return processed
+
 
 def _update_channels(
     channel_records: Iterable[dict[str, Any]],
