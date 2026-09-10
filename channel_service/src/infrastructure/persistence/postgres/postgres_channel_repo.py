@@ -138,6 +138,21 @@ class SQLAlchemyChannelRepository(ChannelRepository):
         logger.debug("Channel exists check completed: id=%s exists=%s", id, res)
         return res
 
+    async def count_channels(self) -> int:
+        """Return the total number of channels."""
+        logger.debug("Counting all channels")
+
+        result = await self._execute_db_operation(
+            "count_channels",
+            self._session.execute,
+            select(func.count(ChannelModel.id)),
+        )
+
+        total = int(result.scalar_one())
+        logger.debug("Total channels: %d", total)
+
+        return total
+
     async def _execute_db_operation(self, operation: str, coro, *args, **kwargs):
         try:
             return await coro(*args, **kwargs)

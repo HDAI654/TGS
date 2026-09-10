@@ -24,3 +24,7 @@ class ChannelRepository(ABC):
     @abstractmethod
     async def exist(self, id: UUID) -> bool:
         raise NotImplementedError
+
+    @abstractmethod
+    async def count_channels(self) -> int:
+        raise NotImplementedError
