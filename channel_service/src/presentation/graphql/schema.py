@@ -15,6 +15,7 @@ from src.application.queries.channel_queries import (
 )
 from src.application.queries.country_queries import (
     get_country,
+    get_all_countries,
     search_countries,
 )
 from src.application.queries.count_query import get_count
@@ -61,6 +62,11 @@ class CountryConnection:
     total: int
     limit: int
     offset: int
+
+
+@strawberry.type
+class Countries:
+    items: list[CountryType]
 
 
 @strawberry.type
@@ -142,6 +148,16 @@ class Query:
             total=total,
             limit=limit,
             offset=offset,
+        )
+
+    @strawberry.field
+    async def all_countries(
+        self,
+        info: Info,
+    ) -> CountryConnection | None:
+        result = await get_all_countries(info.context["country_repository"])
+        return Countries(
+            items=[country_type(item) for item in result],
         )
 
     @strawberry.field

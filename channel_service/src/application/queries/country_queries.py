@@ -22,6 +22,11 @@ async def get_country(
     return await repository.get_by_id(country_code)
 
 
+async def get_all_countries(repository: CountryRepository) -> list[Country]:
+    """Return all countries."""
+    return await repository.get_all()
+
+
 async def search_countries(
     repository: CountryRepository,
     text: str | None,
