@@ -128,7 +128,7 @@ class SQLAlchemyCountryRepository(CountryRepository):
         result = await self._execute_db_operation(
             "count_countries",
             self._session.execute,
-            select(func.count(CountryModel.id)),
+            select(func.count(CountryModel.country_code)),
         )
 
         total = int(result.scalar_one())

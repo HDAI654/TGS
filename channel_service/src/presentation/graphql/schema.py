@@ -163,8 +163,12 @@ class Query:
     @strawberry.field
     async def count(
         self,
+        info: Info,
     ) -> Count | None:
-        result = await get_count()
+        result = await get_count(
+            info.context["country_repository"],
+            info.context["channel_repository"],
+        )
         return Count(
             channels=result["channels"],
             countries=result["countries"],
