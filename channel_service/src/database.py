@@ -6,10 +6,10 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
-from src.conf import DATABASE_URL
+from src.conf import Config
 
 engine = create_async_engine(
-    DATABASE_URL,
+    Config.DATABASE_URL,
     pool_pre_ping=True,
     pool_recycle=1800,
     connect_args={"timeout": 5, "command_timeout": 10},

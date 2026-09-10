@@ -49,7 +49,7 @@ services:
     environment:
       # App
       APP_NAME: TGS
-      APP_ENV: development
+      APP_ENV: production
 
       # PostgreSQL
       DATABASE_URL: postgresql+asyncpg://tgs:wefif5w452ewf52wef1w0c0@postgres:5432/tgs
@@ -85,7 +85,7 @@ services:
     environment:
       # App
       APP_NAME: TGS
-      APP_ENV: development
+      APP_ENV: production
 
       # Channels App URL
       CHANNELS_HEALTH_URL: http://channel_service:8080/health
@@ -99,7 +99,7 @@ services:
       DATABASE_URL: postgresql://tgs:wefif5w452ewf52wef1w0c0@postgres:5432/tgs
 
       # Super User
-      SUPER_USERNAME: tgs-admin-15963
+      SUPER_USERNAME: "tgs-admin-15963"
       SUPER_PASSWORD: "abcd147852"
 
       # Celery
@@ -118,13 +118,6 @@ services:
       channel_service:
         condition: service_started
 
-    command:
-      [
-        "sh",
-        "-c",
-        "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-      ]
-
   celery_worker:
     build:
       context: ./admin_service
@@ -136,7 +129,7 @@ services:
     environment:
       # App
       APP_NAME: TGS
-      APP_ENV: development
+      APP_ENV: production
 
       # Channels App URL
       CHANNELS_HEALTH_URL: http://channel_service:8080/health
@@ -150,7 +143,7 @@ services:
       DATABASE_URL: postgresql://tgs:wefif5w452ewf52wef1w0c0@postgres:5432/tgs
 
       # Super User
-      SUPER_USERNAME: tgs-admin-15963
+      SUPER_USERNAME: "tgs-admin-15963"
       SUPER_PASSWORD: "abcd147852"
 
       # Celery
@@ -183,7 +176,7 @@ services:
     environment:
       # App
       APP_NAME: TGS
-      APP_ENV: development
+      APP_ENV: production
 
       # Channels App URL
       CHANNELS_HEALTH_URL: http://channel_service:8080/health
@@ -197,7 +190,7 @@ services:
       DATABASE_URL: postgresql://tgs:wefif5w452ewf52wef1w0c0@postgres:5432/tgs
 
       # Super User
-      SUPER_USERNAME: tgs-admin-15963
+      SUPER_USERNAME: "tgs-admin-15963"
       SUPER_PASSWORD: "abcd147852"
 
       # Celery

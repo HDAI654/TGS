@@ -11,6 +11,7 @@ from django.db import transaction
 from src.apps.categories.models import Category
 from src.apps.channels.models import Channel
 from src.apps.countries.models import Country
+from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
@@ -170,8 +171,8 @@ class TVGardenCrawler:
 
         return channels
 
-    @staticmethod
     def _normalize_channel(
+        self,
         raw_channel: dict[str, Any],
         category_name: str,
     ) -> dict[str, Any] | None:
@@ -196,11 +197,25 @@ class TVGardenCrawler:
         stream_urls = raw_channel.get("stream_urls") or []
         youtube_urls = raw_channel.get("youtube_urls") or []
 
-        urls = [
-            str(url)
-            for url in [*stream_urls, *youtube_urls]
-            if isinstance(url, str) and url.strip()
-        ]
+        urls: list[str] = []
+
+        for url in [*stream_urls, *youtube_urls]:
+            if not isinstance(url, str):
+                continue
+
+            url = url.strip()
+
+            if not url:
+                continue
+
+            if self._is_valid_url(url):
+                urls.append(url)
+            else:
+                logger.warning(
+                    "Skipping invalid URL for channel '%s': %r",
+                    name,
+                    url,
+                )
 
         return {
             "name": str(name).strip(),
@@ -218,6 +233,23 @@ class TVGardenCrawler:
         except (TypeError, ValueError):
             return 0
 
+    @staticmethod
+    def _is_valid_url(value: Any) -> bool:
+        """Return True when value is an absolute HTTP(S) URL."""
+        if not isinstance(value, str):
+            return False
+
+        value = value.strip()
+
+        if not value:
+            return False
+
+        parsed = urlparse(value)
+
+        return (
+            parsed.scheme in {"http", "https"}
+            and bool(parsed.netloc)
+        )
 
 def _update_countries(
     country_records: Iterable[dict[str, Any]],
@@ -241,7 +273,6 @@ def _update_countries(
         processed += 1
 
     return processed
-
 
 def _update_channels(
     channel_records: Iterable[dict[str, Any]],

@@ -6,14 +6,35 @@ TASK_PATH = "src.apps.background_workers.tasks.update_data"
 
 
 def get_or_create_task() -> PeriodicTask:
-    """Get the update-data periodic task, creating it if necessary."""
-    task, _ = PeriodicTask.objects.get_or_create(
+    """Get the update-data periodic task, creating or repairing it if necessary."""
+
+    schedule, _ = IntervalSchedule.objects.get_or_create(
+        every=60,
+        period=IntervalSchedule.MINUTES,
+    )
+
+    task, created = PeriodicTask.objects.get_or_create(
         name=TASK_NAME,
         defaults={
             "task": TASK_PATH,
+            "interval": schedule,
             "enabled": False,
         },
     )
+
+    if not created:
+        update_fields = []
+
+        if task.task != TASK_PATH:
+            task.task = TASK_PATH
+            update_fields.append("task")
+
+        if task.interval_id is None:
+            task.interval = schedule
+            update_fields.append("interval")
+
+        if update_fields:
+            task.save(update_fields=update_fields)
 
     return task
 
