@@ -8,7 +8,6 @@ TGS provides a clean GraphQL API for public consumption and a full Django admin 
 <p align="center">
   <img src="image.png" alt="Screenshot of the TGS home page" width="100%">
 </p>
----
 
 ## What you get
 
